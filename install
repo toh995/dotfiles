@@ -8,16 +8,16 @@ readonly USERNAME="toh995"
 ####################
 # HELPER FUNCTIONS #
 ####################
-install_package() {
-	local -r pkg_name="${1}"
-	echo "Installing ${pkg_name}"
-	pacman -S --noconfirm "${pkg_name}"
-}
-
 user_exists(){
 	local -r username="${1}"
 	# silent, it just sets the exit code
 	id "${username}" &>/dev/null
+}
+
+install_package() {
+	local -r pkg_name="${1}"
+	echo "Installing ${pkg_name}..."
+	pacman -S --noconfirm "${pkg_name}"
 }
 
 get_default_packages() {
@@ -86,17 +86,16 @@ setup_git_bare_repo() {
 
 	install_package "git"
 
-	local -r user_home=$(eval echo "~${username}")
-	local -r repo_dir="${USER_HOME}/.dotfiles"
+	local -r user_home="$( eval echo "~${username}" )"
+	local -r repo_dir="${user_home}/.dotfiles"
 	local -r repo_url="https://github.com/toh995/dotfiles.git"
 
-	mkdir "${repo_dir}"
-	sudo --user="${username}" \
-		git clone --bare "${repo_url}" "${repo_dir}"
-
-	# checkout all the files
-	sudo --user="${username}" \
-		git --git-dir="${repo_dir}" --work-tree="${user_home}" checkout
+	sudo -u "$username" \
+		bash -c "
+			mkdir -p ${repo_dir}
+			git clone --bare ${repo_url} ${repo_dir}
+			git --git-dir=${repo_dir} --work-tree=${user_home} checkout
+		"
 }
 
 ########
