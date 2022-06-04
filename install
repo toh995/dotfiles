@@ -3,6 +3,8 @@ set -e
 set -o noclobber
 set -o pipefail
 
+readonly USERNAME="toh995"
+
 ####################
 # HELPER FUNCTIONS #
 ####################
@@ -29,7 +31,7 @@ get_default_packages() {
 		rxvt-unicode
 
 		# utilities
-		git
+		# git
 	)
 	echo "${packages[@]}"
 }
@@ -61,7 +63,6 @@ sudo_install_setup() {
 create_user() {
 	install_package "zsh"
 
-	local -r USERNAME="toh995"
 	echo "Creating new user ${USERNAME}..."
 	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${USERNAME}"
 	passwd "${USERNAME}" # todo: what if the user typos the password input?
@@ -72,6 +73,22 @@ install_default_packages() {
 	pacman -S --noconfirm "${packages[@]}"
 }
 
+setup_git_bare_repo() {
+	install_package "git"
+
+	local -r USER_HOME=$(eval echo "~${USERNAME}")
+	local -r REPO_DIR="${USER_HOME}/.dotfiles"
+	local -r REPO_URL="https://github.com/toh995/dotfiles.git"
+
+	mkdir "${REPO_DIR}"
+	sudo --user="${USERNAME}" \
+		git clone --bare "${REPO_URL}" "${REPO_DIR}"
+
+	# checkout all the files
+	sudo --user="${USERNAME}" \
+		git --git-dir="${REPO_DIR}" --work-tree="${USER_HOME}" checkout
+}
+
 ########
 # MAIN #
 ########
@@ -79,6 +96,7 @@ main() {
 	upgrade_all_packages
 	sudo_install_setup
 	create_user
+	setup_git_bare_repo
 	# install_default_packages
 }
 
