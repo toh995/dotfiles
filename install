@@ -14,6 +14,12 @@ install_package() {
 	pacman -S --noconfirm "${pkg_name}"
 }
 
+user_exists(){
+	local -r username="${1}"
+	# silent, it just sets the exit code
+	id "${username}" &>/dev/null
+}
+
 get_default_packages() {
 	local -ar packages=(
 		# x11
@@ -61,11 +67,13 @@ sudo_install_setup() {
 }
 
 create_user() {
+	local -r username="${1}"
+
 	install_package "zsh"
 
-	echo "Creating new user ${USERNAME}..."
-	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${USERNAME}"
-	passwd "${USERNAME}" # todo: what if the user typos the password input?
+	echo "Creating new user ${username}..."
+	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
+	passwd "${username}" # todo: what if the user typos the password input?
 }
 
 install_default_packages() {
@@ -74,19 +82,21 @@ install_default_packages() {
 }
 
 setup_git_bare_repo() {
+	local -r username="${1}"
+
 	install_package "git"
 
-	local -r USER_HOME=$(eval echo "~${USERNAME}")
-	local -r REPO_DIR="${USER_HOME}/.dotfiles"
-	local -r REPO_URL="https://github.com/toh995/dotfiles.git"
+	local -r user_home=$(eval echo "~${username}")
+	local -r repo_dir="${USER_HOME}/.dotfiles"
+	local -r repo_url="https://github.com/toh995/dotfiles.git"
 
-	mkdir "${REPO_DIR}"
-	sudo --user="${USERNAME}" \
-		git clone --bare "${REPO_URL}" "${REPO_DIR}"
+	mkdir "${repo_dir}"
+	sudo --user="${username}" \
+		git clone --bare "${repo_url}" "${repo_dir}"
 
 	# checkout all the files
-	sudo --user="${USERNAME}" \
-		git --git-dir="${REPO_DIR}" --work-tree="${USER_HOME}" checkout
+	sudo --user="${username}" \
+		git --git-dir="${repo_dir}" --work-tree="${user_home}" checkout
 }
 
 ########
@@ -95,8 +105,8 @@ setup_git_bare_repo() {
 main() {
 	upgrade_all_packages
 	sudo_install_setup
-	create_user
-	setup_git_bare_repo
+	user_exists "${USERNAME}" || create_user "${USERNAME}"
+	setup_git_bare_repo "${USERNAME}"
 	# install_default_packages
 }
 
