@@ -4,43 +4,37 @@ set -o noclobber
 set -o pipefail
 
 readonly USERNAME="toh995"
+readonly -a DEFAULT_PACKAGES=(
+	# x11
+	xorg-server
+	xorg-xinit
+
+	# window manager
+	i3-gaps
+	dmenu
+
+	# fonts
+	noto-fonts
+
+	# terminal emulator
+	rxvt-unicode
+
+	# utilities
+	git
+	sudo
+	zsh
+)
+
 
 ####################
 # HELPER FUNCTIONS #
 ####################
-user_exists(){
+user_exists() {
 	local -r username="${1}"
 	# silent, it just sets the exit code
 	id "${username}" &>/dev/null
 }
 
-install_package() {
-	local -r pkg_name="${1}"
-	echo "Installing ${pkg_name}..."
-	pacman -S --noconfirm --needed "${pkg_name}"
-}
-
-get_default_packages() {
-	local -ar packages=(
-		# x11
-		xorg-server
-		xorg-xinit
-
-		# window manager
-		i3-gaps
-		dmenu
-
-		# fonts
-		noto-fonts
-
-		# terminal emulator
-		rxvt-unicode
-
-		# utilities
-		# git
-	)
-	echo "${packages[@]}"
-}
 
 ##################
 # MAIN FUNCTIONS #
@@ -49,9 +43,11 @@ upgrade_all_packages() {
 	pacman -Syu --noconfirm
 }
 
-sudo_install_setup() {
-	install_package "sudo"
+install_packages() {
+	pacman -S --noconfirm "${@}"
+}
 
+setup_sudo() {
 	local -r OVERRIDE_FILE_NAME="/etc/sudoers.d/override"
 
 	{
@@ -60,7 +56,7 @@ sudo_install_setup() {
 		echo "Defaults insults"
 		echo ""
 		echo "%wheel ALL=(ALL:ALL) ALL"
-	} >> "${OVERRIDE_FILE_NAME}"
+	} > "${OVERRIDE_FILE_NAME}"
 
 	# double check that the file is correct
 	visudo --check --file="${OVERRIDE_FILE_NAME}"
@@ -68,8 +64,6 @@ sudo_install_setup() {
 
 create_user() {
 	local -r username="${1}"
-
-	install_package "zsh"
 
 	echo "Creating new user ${username}..."
 	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
@@ -83,9 +77,6 @@ install_default_packages() {
 
 setup_git_bare_repo() {
 	local -r username="${1}"
-
-	install_package "git"
-
 	local -r user_home="$( eval echo "~${username}" )"
 	local -r repo_dir="${user_home}/.dotfiles"
 	local -r repo_url="https://github.com/toh995/dotfiles.git"
@@ -103,10 +94,10 @@ setup_git_bare_repo() {
 ########
 main() {
 	upgrade_all_packages
-	sudo_install_setup
+	install_packages "${DEFAULT_PACKAGES[@]}"
+	setup_sudo
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
-	# install_default_packages
 }
 
 main "${@}"
