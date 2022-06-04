@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -e
+set -o noclobber
+set -o pipefail
+
+####################
+# HELPER FUNCTIONS #
+####################
+install_package() {
+	local -r pkg_name="${1}"
+	echo "Installing ${pkg_name}"
+	pacman -S --noconfirm "${pkg_name}"
+}
+
+get_default_packages() {
+	local -ar packages=(
+		# x11
+		xorg-server
+		xorg-xinit
+
+		# window manager
+		i3-gaps
+		dmenu
+
+		# fonts
+		noto-fonts
+
+		# terminal emulator
+		rxvt-unicode
+
+		# utilities
+		git
+	)
+	echo "${packages[@]}"
+}
+
+##################
+# MAIN FUNCTIONS #
+##################
+upgrade_all_packages() {
+	pacman -Syu --noconfirm
+}
+
+sudo_install_setup() {
+	install_package "sudo"
+
+	local -r OVERRIDE_FILE_NAME="/etc/sudoers.d/override"
+
+	{
+		echo "Defaults passwd_timeout=0"
+		echo "Defaults timestamp_timeout=30"
+		echo "Defaults insults"
+		echo ""
+		echo "%wheel ALL=(ALL:ALL) ALL"
+	} >> "${OVERRIDE_FILE_NAME}"
+
+	# double check that the file is correct
+	visudo --check --file="${OVERRIDE_FILE_NAME}"
+}
+
+create_user() {
+	install_package "zsh"
+
+	local -r USERNAME="toh995"
+	echo "Creating new user ${USERNAME}..."
+	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${USERNAME}"
+	passwd "${USERNAME}" # todo: what if the user typos the password input?
+}
+
+install_default_packages() {
+	local -r packages="$(get_default_packages)}"
+	pacman -S --noconfirm "${packages[@]}"
+}
+
+########
+# MAIN #
+########
+main() {
+	upgrade_all_packages
+	sudo_install_setup
+	create_user
+	# install_default_packages
+}
+
+main "${@}"
