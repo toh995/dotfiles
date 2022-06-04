@@ -17,7 +17,7 @@ user_exists(){
 install_package() {
 	local -r pkg_name="${1}"
 	echo "Installing ${pkg_name}..."
-	pacman -S --noconfirm "${pkg_name}"
+	pacman -S --noconfirm --needed "${pkg_name}"
 }
 
 get_default_packages() {
@@ -78,7 +78,7 @@ create_user() {
 
 install_default_packages() {
 	local -r packages="$(get_default_packages)}"
-	pacman -S --noconfirm "${packages[@]}"
+	pacman -S --noconfirm --needed "${packages[@]}"
 }
 
 setup_git_bare_repo() {
