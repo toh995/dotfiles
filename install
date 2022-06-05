@@ -18,7 +18,7 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# terminal emulator
 	alacritty
-	#rxvt-unicode
+	# rxvt-unicode
 
 	# utilities
 	git
@@ -61,7 +61,7 @@ install_packages() {
 }
 
 setup_sudo() {
-	local -r OVERRIDE_FILE_NAME="/etc/sudoers.d/override"
+	local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
 
 	{
 		echo "Defaults passwd_timeout=0"
@@ -69,10 +69,10 @@ setup_sudo() {
 		echo "Defaults insults"
 		echo ""
 		echo "%wheel ALL=(ALL:ALL) ALL"
-	} >> "${OVERRIDE_FILE_NAME}"
+	} > "${OVERRIDE_FILE_PATH}"
 
 	# double check that the file is correct
-	visudo --check --file="${OVERRIDE_FILE_NAME}"
+	visudo --check --file="${OVERRIDE_FILE_PATH}"
 }
 
 create_user() {
@@ -81,6 +81,19 @@ create_user() {
 	echo "Creating new user ${username}..."
 	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
 	passwd "${username}" # todo: what if the user typos the password input?
+}
+
+configure_autologin() {
+	local -r username="${1}"
+	local -r dir_name="/etc/systemd/system/getty@tty1.service.d"
+	local -r file_path="${dir_name}/autologin.conf"
+
+	mkdir -p "${dir_name}"
+	{
+		echo "[Service]"
+		echo "ExecStart="
+		echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin ${username} - \$TERM"
+	} > "${file_path}"
 }
 
 install_default_packages() {
@@ -137,6 +150,7 @@ main() {
 	install_packages "${DEFAULT_PACKAGES[@]}"
 	setup_sudo
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
+	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_user "${USERNAME}"
 }
