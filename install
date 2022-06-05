@@ -17,7 +17,8 @@ readonly -a DEFAULT_PACKAGES=(
 	noto-fonts
 
 	# terminal emulator
-	rxvt-unicode
+	alacritty
+	#rxvt-unicode
 
 	# utilities
 	git
