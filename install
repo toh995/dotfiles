@@ -35,6 +35,18 @@ user_exists() {
 	id "${username}" &>/dev/null
 }
 
+get_home_dir() {
+	local -r username="${1}"
+	echo "$( eval echo "~${username}" )"
+}
+
+run_as_user() {
+	local -r user="${1}"
+	local -r script="${2}"
+	sudo -u "${user}" \
+		bash -c -i "${script}"
+}
+
 
 ##################
 # MAIN FUNCTIONS #
@@ -77,18 +89,42 @@ install_default_packages() {
 
 setup_git_bare_repo() {
 	local -r username="${1}"
-	local -r user_home="$( eval echo "~${username}" )"
+	local -r user_home="$( get_home_dir "${username}" )"
 	local -r repo_dir="${user_home}/.dotfiles"
 	local -r repo_url="https://github.com/toh995/dotfiles.git"
 
-	sudo -u "$username" \
-		bash -c -i "
+	run_as_user "$username" \
+		"
 			set -e
 			mkdir -p ${repo_dir}
 			git clone --bare ${repo_url} ${repo_dir}
 			alias dot=\"git --git-dir=${repo_dir} --work-tree=${user_home}\"
 			dot checkout
 			dot config --local status.showUntrackedFiles no
+		"
+}
+
+setup_git_user() {
+	local -r username="${1}"
+	local name
+	local email
+
+	read -p "Enter your git name: " name
+	read -p "Enter your git email: " email
+
+	local -r home_dir="$( get_home_dir "${username}" )"
+
+	run_as_user "${username}" \
+		"
+			set -e
+
+			if [[ ! -f ${home_dir}/.config/git/config ]]; then
+				mkdir -p ${home_dir}/.config/git
+				touch ${home_dir}/.config/git/config
+			fi
+
+			git config --global user.name "${name}"
+			git config --global user.email "${email}"
 		"
 }
 
@@ -101,6 +137,6 @@ main() {
 	setup_sudo
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
+	setup_git_user "${USERNAME}"
 }
-
 main "${@}"
