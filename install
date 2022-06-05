@@ -153,5 +153,9 @@ main() {
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_user "${USERNAME}"
+
+	local response
+	read -N 1 -p "Set up is complete! Would you like to reboot now? (y/n) " response
+	[[ "${response}" == "y" || "$response" == "Y" ]] && reboot
 }
 main "${@}"
