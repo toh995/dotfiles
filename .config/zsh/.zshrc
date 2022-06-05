@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+set -o noclobber
+set -o pipefail
+
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias ls="ls -1a"
 
