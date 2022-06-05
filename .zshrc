@@ -8,5 +8,5 @@ alias ls="ls -1a"
 
 help() {
 	local -r command="${1}"
-	bash <<< "help ${command}"
+	bash <<< "help ${command} | less"
 }
