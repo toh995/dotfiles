@@ -56,7 +56,7 @@ setup_sudo() {
 		echo "Defaults insults"
 		echo ""
 		echo "%wheel ALL=(ALL:ALL) ALL"
-	} > "${OVERRIDE_FILE_NAME}"
+	} >> "${OVERRIDE_FILE_NAME}"
 
 	# double check that the file is correct
 	visudo --check --file="${OVERRIDE_FILE_NAME}"
@@ -82,10 +82,13 @@ setup_git_bare_repo() {
 	local -r repo_url="https://github.com/toh995/dotfiles.git"
 
 	sudo -u "$username" \
-		bash -c "
+		bash -c -i "
+			set -e
 			mkdir -p ${repo_dir}
 			git clone --bare ${repo_url} ${repo_dir}
-			git --git-dir=${repo_dir} --work-tree=${user_home} checkout
+			alias dot=\"git --git-dir=${repo_dir} --work-tree=${user_home}\"
+			dot checkout
+			dot config --local status.showUntrackedFiles no
 		"
 }
 
