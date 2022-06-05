@@ -75,10 +75,19 @@ setup_sudo() {
 	visudo --check --file="${OVERRIDE_FILE_PATH}"
 }
 
+clean_new_user_skeleton() {
+	# hack, return a success code,
+	# b/c removing `.` and `..` results in error code
+	rm /etc/skel/.* 2> /dev/null \
+		|| return 0
+}
+
 create_user() {
 	local -r username="${1}"
+	local -r home_dir="/home/${username}"
 
 	echo "Creating new user ${username}..."
+	# mkdir "${home_dr}"
 	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
 	passwd "${username}" # todo: what if the user typos the password input?
 }
@@ -149,11 +158,14 @@ main() {
 	upgrade_all_packages
 	install_packages "${DEFAULT_PACKAGES[@]}"
 	setup_sudo
+	clean_new_user_skeleton
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_user "${USERNAME}"
 
+	# Now we are done!
+	# Confirm with the user whether to reboot
 	local response
 	read -N 1 -p "Set up is complete! Would you like to reboot now? (y/n) " response
 	[[ "${response}" == "y" || "$response" == "Y" ]] && reboot
