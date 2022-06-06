@@ -12,3 +12,5 @@ help() {
 	local -r command="${1}"
 	bash <<< "help ${command} | less"
 }
+
+source "${ZDOTDIR}/less.zsh"
