@@ -1,8 +1,8 @@
+# set default options for less
 export LESS="${LESS} -R --mouse"
 
-# use the `colors` autoload
+# set colors, i.e. for man pages
 autoload -U colors && colors
-
 export LESS_TERMCAP_mb="${fg_bold[red]}"
 export LESS_TERMCAP_md="${fg_bold[red]}"
 export LESS_TERMCAP_me="${reset_color}"

@@ -106,11 +106,6 @@ configure_autologin() {
 	} > "${file_path}"
 }
 
-install_default_packages() {
-	local -r packages="$(get_default_packages)}"
-	pacman -S --noconfirm --needed "${packages[@]}"
-}
-
 setup_git_bare_repo() {
 	local -r username="${1}"
 	local -r user_home="$( get_home_dir "${username}" )"
