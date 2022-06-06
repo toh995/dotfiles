@@ -23,6 +23,7 @@ readonly -a DEFAULT_PACKAGES=(
 	# utilities
 	git
 	sudo
+	zoxide
 	zsh
 )
 
