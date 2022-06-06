@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+set -o noclobber
+set -o pipefail
+
+# An extremely incomplete script at the moment...
+
+# Todo: Install brew first?
+# Todo: Make a Brewfile?
+brew install zoxide
