@@ -3,7 +3,10 @@
 export ZDOTDIR="${HOME}/.config/zsh"
 
 export PATH="${HOME}/.bin:${PATH}"
+
+# default apps
 export EDITOR="nvim"
+export PAGER="less"
 export VISUAL="nvim"
 
 # X11
