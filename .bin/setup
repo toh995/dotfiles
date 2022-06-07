@@ -13,9 +13,6 @@ readonly -a DEFAULT_PACKAGES=(
 	i3-gaps
 	dmenu
 
-	# fonts
-	noto-fonts
-
 	# terminal emulator
 	alacritty
 	# rxvt-unicode
@@ -26,6 +23,11 @@ readonly -a DEFAULT_PACKAGES=(
 	zoxide
 	zsh
 	zsh-theme-powerlevel10k-git
+)
+# hack: need to install fonts AFTER powerlevel10k)
+readonly -a FONTS=(
+	# noto-fonts
+	ttf-meslo-nerd-font-powerlevel10k
 )
 
 
@@ -194,6 +196,7 @@ main() {
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	yay_install_setup "${USERNAME}"
 	install_packages "${DEFAULT_PACKAGES[@]}"
+	install_packages "${FONTS[@]}"
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_user "${USERNAME}"
