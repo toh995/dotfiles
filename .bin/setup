@@ -31,6 +31,23 @@ readonly -a DEFAULT_PACKAGES=(
 ####################
 # HELPER FUNCTIONS #
 ####################
+command_exists() {
+	local -r command="${1}"
+	if type "${command}" &>/dev/null; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+install_packages() {
+	if command_exists "yay"; then
+		yay -S --noconfirm "${@}"
+	else
+		pacman -S --noconfirm "${@}"
+	fi
+}
+
 user_exists() {
 	local -r username="${1}"
 	# silent, it just sets the exit code
@@ -57,12 +74,10 @@ upgrade_all_packages() {
 	pacman -Syu --noconfirm
 }
 
-install_packages() {
-	pacman -S --noconfirm "${@}"
-}
-
 setup_sudo() {
 	local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
+
+	install_packages "sudo"
 
 	{
 		echo "Defaults passwd_timeout=0"
@@ -87,10 +102,31 @@ create_user() {
 	local -r username="${1}"
 	local -r home_dir="/home/${username}"
 
+	install_packages "zsh"
+
 	echo "Creating new user ${username}..."
-	# mkdir "${home_dr}"
 	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
 	passwd "${username}" # todo: what if the user typos the password input?
+}
+
+yay_install_setup() {
+	local -r username="${1}"
+	pacman -S --needed --noconfirm git base-devel
+
+	# install yay
+	run_as_user "${username}" \
+		"
+			set -e
+			cd /tmp
+			git clone https://aur.archlinux.org/yay.git
+			cd yay
+			makepkg -si
+		"
+
+	# once yay is installed, perform some housekeeping
+	yay -Y --gendb
+	yay -Syu --devel
+	yay -Y --devel --save
 }
 
 configure_autologin() {
@@ -152,10 +188,11 @@ setup_git_user() {
 ########
 main() {
 	upgrade_all_packages
-	install_packages "${DEFAULT_PACKAGES[@]}"
 	setup_sudo
 	clean_new_user_skeleton
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
+	yay_install_setup "${USERNAME}"
+	install_packages "${DEFAULT_PACKAGES[@]}"
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_user "${USERNAME}"
