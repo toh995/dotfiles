@@ -25,6 +25,7 @@ readonly -a DEFAULT_PACKAGES=(
 	sudo
 	zoxide
 	zsh
+	zsh-theme-powerlevel10k-git
 )
 
 
