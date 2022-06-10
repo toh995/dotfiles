@@ -4,10 +4,16 @@ set -o noclobber
 set -o pipefail
 
 readonly USERNAME="toh995"
+
+# IF REMOVING A PACKAGE,
+# SEARCH THE REST OF THIS SCRIPT
 readonly -a DEFAULT_PACKAGES=(
 	# x11
 	xorg-server
 	xorg-xinit
+
+	# sound
+	jack2
 
 	# window manager
 	i3-gaps
@@ -17,16 +23,22 @@ readonly -a DEFAULT_PACKAGES=(
 	alacritty
 	# rxvt-unicode
 
-	# utilities
+	# firefox font
+	noto-fonts
+
+	# apps
+	firefox
+
+	# commandline utilities
 	git
 	sudo
 	zoxide
 	zsh
 	zsh-theme-powerlevel10k-git
 )
-# hack: need to install fonts AFTER powerlevel10k)
-readonly -a FONTS=(
-	# noto-fonts
+
+# hack: need to install this AFTER powerlevel10k
+readonly -a P10K_FONTS=(
 	ttf-meslo-nerd-font-powerlevel10k
 )
 
@@ -45,9 +57,9 @@ command_exists() {
 
 install_packages() {
 	if command_exists "yay"; then
-		yay -S --noconfirm "${@}"
+		yay -S "${@}"
 	else
-		pacman -S --noconfirm "${@}"
+		pacman -S "${@}"
 	fi
 }
 
@@ -74,7 +86,7 @@ run_as_user() {
 # MAIN FUNCTIONS #
 ##################
 upgrade_all_packages() {
-	pacman -Syu --noconfirm
+	pacman -Syu
 }
 
 setup_sudo() {
@@ -114,7 +126,7 @@ create_user() {
 
 yay_install_setup() {
 	local -r username="${1}"
-	pacman -S --needed --noconfirm git base-devel
+	pacman -S --needed git base-devel
 
 	# install yay
 	run_as_user "${username}" \
@@ -196,7 +208,7 @@ main() {
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	yay_install_setup "${USERNAME}"
 	install_packages "${DEFAULT_PACKAGES[@]}"
-	install_packages "${FONTS[@]}"
+	install_packages "${P10K_FONTS[@]}"
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_user "${USERNAME}"
