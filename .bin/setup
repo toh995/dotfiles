@@ -174,7 +174,7 @@ setup_git_bare_repo() {
 		"
 }
 
-setup_git_user() {
+setup_git_profile() {
 	local -r username="${1}"
 	local name
 	local email
@@ -183,18 +183,25 @@ setup_git_user() {
 	read -p "Enter your git email: " email
 
 	local -r home_dir="$( get_home_dir "${username}" )"
+	local -r directory="${home_dir}/.config/git"
+	local -r filepath="${directory}/profile"
 
 	run_as_user "${username}" \
 		"
 			set -e
 
-			if [[ ! -f ${home_dir}/.config/git/config ]]; then
-				mkdir -p ${home_dir}/.config/git
-				touch ${home_dir}/.config/git/config
+			# ensure the profile exists
+			if [[ ! -f ${filepath} ]]; then
+				mkdir -p ${directory}
+				touch ${filepath}
 			fi
 
-			git config --global user.name "${name}"
-			git config --global user.email "${email}"
+			# write to the profile
+			{
+				echo '[user]'
+				echo '	name = ${name}'
+				echo '	email = ${email}'
+			} >> ${filepath}
 		"
 }
 
@@ -211,7 +218,7 @@ main() {
 	install_packages "${P10K_FONTS[@]}"
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
-	setup_git_user "${USERNAME}"
+	setup_git_profile "${USERNAME}"
 
 	# Now we are done!
 	# Confirm with the user whether to reboot
