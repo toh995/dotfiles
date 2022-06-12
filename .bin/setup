@@ -31,6 +31,8 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# commandline utilities
 	git
+	man-db
+	nnn
 	sudo
 	zoxide
 	zsh
