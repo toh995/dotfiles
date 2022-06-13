@@ -12,6 +12,9 @@ readonly -a DEFAULT_PACKAGES=(
 	xorg-server
 	xorg-xinit
 
+	# networking
+	networkmanager
+
 	# sound
 	jack2
 
@@ -146,6 +149,11 @@ yay_install_setup() {
 	yay -Y --devel --save
 }
 
+configure_networkmanager() {
+	systemctl start NetworkManager.service
+	systemctl enable NetworkManager.service
+}
+
 configure_autologin() {
 	local -r username="${1}"
 	local -r dir_name="/etc/systemd/system/getty@tty1.service.d"
@@ -229,6 +237,7 @@ main() {
 	yay_install_setup "${USERNAME}"
 	install_packages "${DEFAULT_PACKAGES[@]}"
 	install_packages "${P10K_FONTS[@]}"
+	configure_networkmanager
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_profile "${USERNAME}"
