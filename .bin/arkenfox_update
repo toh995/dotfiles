@@ -33,5 +33,5 @@ done
 ######################
 # Perform the update #
 ######################
-"${PROFILE_DIR}"/updater.sh
+"${PROFILE_DIR}"/updater.sh -o "${XDG_CONFIG_HOME}/arkenfox/user-overrides.js"
 "${PROFILE_DIR}"/prefsCleaner.sh -s
