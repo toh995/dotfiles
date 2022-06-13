@@ -25,6 +25,11 @@ export LESS_TERMCAP_se="${reset_color}"
 export LESS_TERMCAP_us="${fg_bold[green]}"
 export LESS_TERMCAP_ue="${reset_color}"
 
+########
+# nnn  #
+########
+export NNN_OPTS="H"
+
 #################
 # powerlevel10k #
 #################
