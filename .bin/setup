@@ -140,12 +140,12 @@ yay_install_setup() {
 			git clone https://aur.archlinux.org/yay.git
 			cd yay
 			makepkg -si
-		"
 
-	# once yay is installed, perform some housekeeping
-	yay -Y --gendb
-	yay -Syu --devel
-	yay -Y --devel --save
+			# once yay is installed, perform some housekeeping
+			yay -Y --gendb
+			yay -Syu --devel
+			yay -Y --devel --save
+		"
 }
 
 install_powerlevel10k() {
