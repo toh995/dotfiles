@@ -39,12 +39,11 @@ readonly -a DEFAULT_PACKAGES=(
 	sudo
 	zoxide
 	zsh
-	zsh-theme-powerlevel10k-git
-)
 
-# hack: need to install this AFTER powerlevel10k
-readonly -a P10K_FONTS=(
-	ttf-meslo-nerd-font-powerlevel10k
+	# powerlevel10k (leave these commented out)
+	# they are installed in a separate function
+	# zsh-theme-powerlevel10k-git
+	# ttf-meslo-nerd-font-powerlevel10k
 )
 
 
@@ -149,8 +148,16 @@ yay_install_setup() {
 	yay -Y --devel --save
 }
 
+install_powerlevel10k() {
+	local -r username="${1}"
+	run_as_user "${username}" \
+		"yay -S \
+			zsh-theme-powerlevel10k-git \
+			ttf-meslo-nerd-font-powerlevel10k
+		"
+}
+
 configure_networkmanager() {
-	systemctl start NetworkManager.service
 	systemctl enable NetworkManager.service
 }
 
@@ -236,17 +243,13 @@ main() {
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	yay_install_setup "${USERNAME}"
 	install_packages "${DEFAULT_PACKAGES[@]}"
-	install_packages "${P10K_FONTS[@]}"
+	install_powerlevel10k "${USERNAME}"
 	configure_networkmanager
 	configure_autologin "${USERNAME}"
-	setup_git_bare_repo "${USERNAME}"
 	setup_git_profile "${USERNAME}"
+	setup_git_bare_repo "${USERNAME}"
 	remove_orphaned_packages
 
-	# Now we are done!
-	# Confirm with the user whether to reboot
-	local response
-	read -N 1 -p "Set up is complete! Would you like to reboot now? (y/n) " response
-	[[ "${response}" == "y" || "$response" == "Y" ]] && reboot
+	echo "Set up is complete! Please reboot."
 }
 main "${@}"
