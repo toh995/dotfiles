@@ -207,6 +207,17 @@ setup_git_profile() {
 		"
 }
 
+remove_orphaned_packages() {
+	local command
+	if command_exists "yay"; then
+		command="yay"
+	else
+		command="pacman"
+	fi
+
+	("${command}" -Qtdq | "${command}" -Rns --noconfirm - 2&>/dev/null) || true
+}
+
 ########
 # MAIN #
 ########
@@ -221,6 +232,7 @@ main() {
 	configure_autologin "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	setup_git_profile "${USERNAME}"
+	remove_orphaned_packages
 
 	# Now we are done!
 	# Confirm with the user whether to reboot
