@@ -34,7 +34,7 @@ floating_modifier Mod1
 bindsym Mod1+Return exec i3-sensible-terminal
 
 # start a web browser window
-bindsym Mod1+b exec firefox
+bindsym Mod1+b exec brave
 
 # kill focused window
 bindsym Mod1+q kill

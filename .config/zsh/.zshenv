@@ -5,7 +5,7 @@ export ZDOTDIR="${HOME}/.config/zsh"
 export PATH="${HOME}/.bin:${PATH}"
 
 # default apps
-export BROWSER="firefox"
+export BROWSER="brave"
 export EDITOR="nvim"
 export PAGER="less"
 export VISUAL="nvim"

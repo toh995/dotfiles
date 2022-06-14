@@ -15,9 +15,6 @@ readonly -a DEFAULT_PACKAGES=(
 	# networking
 	networkmanager
 
-	# sound
-	jack2
-
 	# window manager
 	i3-gaps
 	dmenu
@@ -26,11 +23,11 @@ readonly -a DEFAULT_PACKAGES=(
 	alacritty
 	# rxvt-unicode
 
-	# firefox font
+	# browser font
 	noto-fonts
 
 	# apps
-	firefox
+	brave-bin
 
 	# commandline utilities
 	git
