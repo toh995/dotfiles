@@ -13,7 +13,7 @@ Use `nmtui`
 2. Go to Profile > Settings > Developer Settings > Personal Access Tokens
 3. Generate a new token, with `admin:public_key` selected
 4. Run `github_ssh_setup`
-5. Manually switch the `dotfiles` repo to use SSH: [Reference](https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories#switching-remote-urls-from-https-to-ssh=)
+5. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
 
 ---
 
