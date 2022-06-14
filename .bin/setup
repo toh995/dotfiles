@@ -28,6 +28,7 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# apps
 	brave-bin
+	keepassxc
 
 	# commandline utilities
 	git
