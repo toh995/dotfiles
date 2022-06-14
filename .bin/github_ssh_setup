@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -e
+set -o noclobber
+set -o pipefail
+
+declare token title
+read -p "Enter your github token: " token
+read -p "Enter a name for the ssh key: " title
+
+readonly PUBLIC_KEY_FILEPATH="${HOME}/.ssh/id_ed25519.pub"
+readonly PRIVATE_KEY_FILEPATH="${HOME}/.ssh/id_ed25519"
+
+# If no public key yet, then create it
+if [[ ! -f "${PUBLIC_KEY_FILEPATH}" ]]; then
+	declare email
+	read -p "Enter github email: " email
+
+	ssh-keygen -t ed25519 -C "${email}"
+	eval "$(ssh-agent -s)"
+	ssh-add "${PRIVATE_KEY_FILEPATH}"
+fi
+
+# get the public key
+readonly public_key="$( cat "${PUBLIC_KEY_FILEPATH}" )"
+
+# add the key to github
+curl \
+	-X POST \
+	-H "Accept: application/vnd.github.v3+json" \
+	-H "Authorization: token ${token}" \
+	-d "{ \"key\": \"${public_key}\", \"title\": \"${title}\" }" \
+	https://api.github.com/user/keys

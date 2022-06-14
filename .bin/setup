@@ -34,6 +34,7 @@ readonly -a DEFAULT_PACKAGES=(
 	git
 	man-db
 	nnn
+	openssh
 	sudo
 	zoxide
 	zsh
