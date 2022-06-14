@@ -103,7 +103,7 @@ setup_sudo() {
 		echo "Defaults insults"
 		echo ""
 		echo "%wheel ALL=(ALL:ALL) ALL"
-	} > "${OVERRIDE_FILE_PATH}"
+	} >| "${OVERRIDE_FILE_PATH}"
 
 	# double check that the file is correct
 	visudo --check --file="${OVERRIDE_FILE_PATH}"
@@ -136,6 +136,7 @@ yay_install_setup() {
 		"
 			set -e
 			cd /tmp
+			[[ -d /tmp/yay ]] && rm -rf /tmp/yay
 			git clone https://aur.archlinux.org/yay.git
 			cd yay
 			makepkg -si
