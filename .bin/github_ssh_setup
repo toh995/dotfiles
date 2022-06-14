@@ -30,3 +30,6 @@ curl \
 	-H "Authorization: token ${token}" \
 	-d "{ \"key\": \"${public_key}\", \"title\": \"${title}\" }" \
 	https://api.github.com/user/keys
+
+# test to make sure it worked
+ssh -T git@github.com || true
