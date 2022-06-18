@@ -1,9 +1,11 @@
 # dotfiles
 
-1. Log in as root
-2. Run the command:
+1. Install the OS normally (i.e. [Arch Install Notes](ARCH_INSTALL_NOTES.md))
+2. Log in as root
+3. Run the command:
 ```bash
 bash <(curl https://raw.githubusercontent.com/toh995/dotfiles/main/.bin/setup)
 ```
-3. When the script is complete, reboot the system.
-4. Follow the [Post Install Instructions](POST_INSTALL.md)
+4. If the script stops running for some reason, use `fg 1`
+5. When the script is complete, reboot the system.
+6. Follow the [Post Install Instructions](POST_INSTALL.md)
