@@ -35,6 +35,7 @@ readonly -a DEFAULT_PACKAGES=(
 	# commandline utilities
 	git
 	man-db
+	neofetch
 	nnn
 	openssh
 	sudo
