@@ -111,6 +111,9 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
+# switch to the last-used workspace
+bindsym Mod1+Tab workspace back_and_forth
+
 # switch to workspace
 bindsym Mod1+1 workspace number $ws1
 bindsym Mod1+2 workspace number $ws2
