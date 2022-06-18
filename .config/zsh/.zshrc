@@ -5,6 +5,9 @@ set -o pipefail
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias j="z" # zoxide
 alias ls="ls -1a"
+alias ta="tmux attach-session -t"
+alias tls="tmux ls"
+alias tn="tmux new-session -s"
 
 help() {
 	local -r command="${1}"
