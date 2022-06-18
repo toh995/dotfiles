@@ -10,6 +10,7 @@ Use `nmtui`
 
 ### GitHub ssh setup
 1. Log in to github
+	- To access the USB, use [manual mounting](https://wiki.archlinux.org/title/USB_storage_devices#Manual_mounting)
 2. Go to Profile > Settings > Developer Settings > Personal Access Tokens
 3. Generate a new token, with `admin:public_key` selected
 4. Run `github_ssh_setup`
