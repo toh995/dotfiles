@@ -41,8 +41,8 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# powerlevel10k (leave these commented out)
 	# they are installed in a separate function
-	# zsh-theme-powerlevel10k-git
-	# ttf-meslo-nerd-font-powerlevel10k
+	ttf-meslo-nerd-font-powerlevel10k
+	zsh-theme-powerlevel10k-git
 )
 
 
@@ -79,7 +79,8 @@ get_home_dir() {
 
 run_as_user() {
 	local -r user="${1}"
-	local -r script="${2}"
+	shift
+	local -r script="${@}"
 	sudo -u "${user}" \
 		bash -c -i "${script}"
 }
@@ -95,7 +96,7 @@ upgrade_all_packages() {
 setup_sudo() {
 	local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
 
-	install_packages "sudo"
+	pacman -S "sudo"
 
 	{
 		echo "Defaults passwd_timeout=0"
@@ -120,7 +121,7 @@ create_user() {
 	local -r username="${1}"
 	local -r home_dir="/home/${username}"
 
-	install_packages "zsh"
+	pacman -S "zsh"
 
 	echo "Creating new user ${username}..."
 	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
@@ -148,17 +149,16 @@ yay_install_setup() {
 		"
 }
 
-install_powerlevel10k() {
+install_default_packages() {
 	local -r username="${1}"
-	run_as_user "${username}" \
-		"yay -S \
-			zsh-theme-powerlevel10k-git \
-			ttf-meslo-nerd-font-powerlevel10k
-		"
+	shift
+	run_as_user "${username}" "yay -S ${@}"
 }
 
 configure_networkmanager() {
-	systemctl enable NetworkManager.service
+	local -r SERVICE="NetworkManager.service"
+	systemctl is-enabled --quiet "${SERVICE}" || \
+		systemctl enable "${SERVICE}"
 }
 
 configure_autologin() {
@@ -171,7 +171,7 @@ configure_autologin() {
 		echo "[Service]"
 		echo "ExecStart="
 		echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin ${username} - \$TERM"
-	} > "${file_path}"
+	} >| "${file_path}"
 }
 
 setup_git_bare_repo() {
@@ -242,8 +242,7 @@ main() {
 	clean_new_user_skeleton
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
 	yay_install_setup "${USERNAME}"
-	install_packages "${DEFAULT_PACKAGES[@]}"
-	install_powerlevel10k "${USERNAME}"
+	install_default_packages "${USERNAME}" "${DEFAULT_PACKAGES[@]}"
 	configure_networkmanager
 	configure_autologin "${USERNAME}"
 	setup_git_profile "${USERNAME}"
