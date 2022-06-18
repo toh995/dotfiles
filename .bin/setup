@@ -33,6 +33,7 @@ readonly -a DEFAULT_PACKAGES=(
 	keepassxc
 
 	# commandline utilities
+	btop
 	git
 	man-db
 	neofetch
