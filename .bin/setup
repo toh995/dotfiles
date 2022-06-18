@@ -17,6 +17,7 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# window manager
 	i3-gaps
+	polybar
 	dmenu
 
 	# terminal emulator
