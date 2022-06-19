@@ -5,7 +5,7 @@ set -o pipefail
 
 set_brightness() {
 	local -r brightness="${1}"
-	echo "${brightness}" | sudo tee /sys/class/backlight/*/brightness
+	echo "${brightness}" | tee /sys/class/backlight/*/brightness
 }
 
 main() {

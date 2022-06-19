@@ -97,29 +97,20 @@ run_as_user() {
 		bash -c -i "${script}"
 }
 
+write_to_file() {
+	local -r filepath="${1}"
+	local -r text="${2}"
+
+	mkdir -p "$( dirname "${filepath}" )"
+	echo "${text}" >| "${filepath}"
+}
+
 
 ##################
 # MAIN FUNCTIONS #
 ##################
 upgrade_all_packages() {
 	pacman -Syu
-}
-
-setup_sudo() {
-	local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
-
-	pacman -S "sudo"
-
-	{
-		echo "Defaults passwd_timeout=0"
-		echo "Defaults timestamp_timeout=30"
-		echo "Defaults insults"
-		echo ""
-		echo "%wheel ALL=(ALL:ALL) ALL"
-	} >| "${OVERRIDE_FILE_PATH}"
-
-	# double check that the file is correct
-	visudo --check --file="${OVERRIDE_FILE_PATH}"
 }
 
 clean_new_user_skeleton() {
@@ -136,8 +127,33 @@ create_user() {
 	pacman -S "zsh"
 
 	echo "Creating new user ${username}..."
-	useradd --create-home --gid=users --groups=wheel --shell=/usr/bin/zsh "${username}"
+	useradd --create-home --gid=users --shell=/usr/bin/zsh "${username}"
 	passwd "${username}" # todo: what if the user typos the password input?
+}
+
+setup_sudo() {
+	local -r username="${1}"
+	local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
+
+	# install sudo
+	pacman -S "sudo"
+
+	# add user to the wheel group
+	usermod -a -G wheel "${username}"
+
+	# allow `wheel` group to do root stuff
+	write_to_file "${OVERRIDE_FILE_PATH}" \
+		"$( cat <<-EOF
+			Defaults passwd_timeout=0
+			Defaults timestamp_timeout=30
+			Defaults insults
+
+			%wheel ALL=(ALL:ALL) ALL
+			EOF
+		)"
+
+	# double check that the file is correct
+	visudo --check --file="${OVERRIDE_FILE_PATH}"
 }
 
 yay_install_setup() {
@@ -175,15 +191,30 @@ configure_networkmanager() {
 
 configure_autologin() {
 	local -r username="${1}"
-	local -r dir_name="/etc/systemd/system/getty@tty1.service.d"
-	local -r file_path="${dir_name}/autologin.conf"
+	local -r filepath="/etc/systemd/system/getty@tty1.service.d/autologin.conf"
 
-	mkdir -p "${dir_name}"
-	{
-		echo "[Service]"
-		echo "ExecStart="
-		echo "ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin ${username} - \$TERM"
-	} >| "${file_path}"
+	write_to_file "${filepath}" \
+		"$( cat <<-EOF
+			[Service]
+			ExecStart=
+			ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin ${username} - \$TERM
+			EOF
+		)"
+}
+
+configure_backlight_brightness() {
+	# add user to the video group
+	local -r username="${1}"
+	usermod -a -G video "${username}"
+
+	# write udev rules for the video group
+	local -r filepath="/etc/udev/rules.d/backlight.rules"
+	write_to_file "${filepath}" \
+		"$( cat <<-EOF
+			ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+			ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+			EOF
+		)"
 }
 
 setup_git_bare_repo() {
@@ -212,8 +243,7 @@ setup_git_profile() {
 	read -p "Enter your git email: " email
 
 	local -r home_dir="$( get_home_dir "${username}" )"
-	local -r directory="${home_dir}/.config/git"
-	local -r filepath="${directory}/profile"
+	local -r filepath="${home_dir}/.config/git/profile"
 
 	run_as_user "${username}" \
 		"
@@ -221,7 +251,7 @@ setup_git_profile() {
 
 			# ensure the profile exists
 			if [[ ! -f ${filepath} ]]; then
-				mkdir -p ${directory}
+				mkdir -p \$(dirname ${filepath})
 				touch ${filepath}
 			fi
 
@@ -250,13 +280,14 @@ remove_orphaned_packages() {
 ########
 main() {
 	upgrade_all_packages
-	setup_sudo
 	clean_new_user_skeleton
 	user_exists "${USERNAME}" || create_user "${USERNAME}"
+	setup_sudo "${USERNAME}"
 	yay_install_setup "${USERNAME}"
 	install_default_packages "${USERNAME}" "${DEFAULT_PACKAGES[@]}"
 	configure_networkmanager
 	configure_autologin "${USERNAME}"
+	configure_backlight_brightness "${USERNAME}"
 	setup_git_profile "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	remove_orphaned_packages
