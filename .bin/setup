@@ -12,13 +12,20 @@ readonly -a DEFAULT_PACKAGES=(
 	xorg-server
 	xorg-xinit
 
-	# networking
-	networkmanager
-
 	# window manager
 	i3-gaps
 	polybar
 	dmenu
+
+	# networking
+	networkmanager
+
+	# sound
+	pipewire
+	pipewire-alsa
+	pipewire-jack
+	pipewire-pulse
+	wireplumber
 
 	# terminal emulator
 	alacritty
