@@ -39,6 +39,7 @@ readonly -a DEFAULT_PACKAGES=(
 	neofetch
 	nnn
 	openssh
+	python-grip
 	sudo
 	zoxide
 	zsh
