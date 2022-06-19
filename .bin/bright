@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -e
+set -o noclobber
+set -o pipefail
+
+set_brightness() {
+	local -r brightness="${1}"
+	echo "${brightness}" | sudo tee /sys/class/backlight/*/brightness
+}
+
+main() {
+	case "${1}" in
+		--help)
+			cat <<-EOF
+				Usage:
+				bright +100
+				bright -50
+				bright -0
+				bright max
+				bright min
+			EOF
+			;;
+		max)
+			local -r max_brightness="$( cat /sys/class/backlight/*/max_brightness )"
+			set_brightness "${max_brightness}"
+			;;
+		min)
+			set_brightness 0
+			;;
+		+* | -*)
+			local -r curr_brightness="$( cat /sys/class/backlight/*/brightness )"
+			local -r new_brightness=$(( "${curr_brightness}" "${1}" ))
+			set_brightness "${new_brightness}"
+			;;
+	esac
+}
+main "${@}"
