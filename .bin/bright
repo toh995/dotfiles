@@ -9,16 +9,21 @@ set_brightness() {
 }
 
 main() {
+	local -r curr_brightness="$( cat /sys/class/backlight/*/brightness )"
+
 	case "${1}" in
 		--help)
 			cat <<-EOF
 				Usage:
+				bright
 				bright +100
 				bright -50
-				bright -0
 				bright max
 				bright min
 			EOF
+			;;
+		"")
+			echo "${curr_brightness}"
 			;;
 		max)
 			local -r max_brightness="$( cat /sys/class/backlight/*/max_brightness )"
@@ -28,7 +33,6 @@ main() {
 			set_brightness 0
 			;;
 		+* | -*)
-			local -r curr_brightness="$( cat /sys/class/backlight/*/brightness )"
 			local -r new_brightness=$(( "${curr_brightness}" "${1}" ))
 			set_brightness "${new_brightness}"
 			;;
