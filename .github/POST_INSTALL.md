@@ -7,6 +7,9 @@ Use `nmtui`
 2. Add extensions
 	- [Vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en)
 	- [privacytools.io](https://www.privacytools.io/#browser-addons)
+3. Change the downloads folder
+	- Open Settings
+	- Search for downloads
 
 ### GitHub ssh setup
 1. Log in to github
