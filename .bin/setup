@@ -32,8 +32,11 @@ readonly -a DEFAULT_PACKAGES=(
 	tmux
 	# rxvt-unicode
 
-	# browser font
+	# fonts
 	noto-fonts
+	noto-fonts-cjk
+	noto-fonts-emoji
+	noto-fonts-extra
 
 	# apps
 	brave-bin
@@ -51,8 +54,7 @@ readonly -a DEFAULT_PACKAGES=(
 	zoxide
 	zsh
 
-	# powerlevel10k (leave these commented out)
-	# they are installed in a separate function
+	# powerlevel10k
 	ttf-meslo-nerd-font-powerlevel10k
 	zsh-theme-powerlevel10k-git
 )
