@@ -15,6 +15,11 @@ help() {
 }
 
 ########
+# grip #
+########
+export GRIPHOME="${XDG_CONFIG_HOME:-$HOME/.config}/grip"
+
+########
 # less #
 ########
 export LESS="${LESS} -R --mouse"
