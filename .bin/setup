@@ -20,6 +20,10 @@ readonly -a DEFAULT_PACKAGES=(
 	# networking
 	networkmanager
 
+	# bluetooth
+	bluez
+	bluez-utils
+
 	# sound
 	pipewire
 	pipewire-alsa
@@ -107,6 +111,12 @@ write_to_file() {
 	echo "${text}" >| "${filepath}"
 }
 
+enable_service_systemd() {
+	local -r service="${1}"
+	systemctl is-enabled --quiet "${service}" || \
+		systemctl enable "${service}"
+}
+
 
 ##################
 # MAIN FUNCTIONS #
@@ -183,12 +193,6 @@ install_default_packages() {
 	local -r username="${1}"
 	shift
 	run_as_user "${username}" "yay -S ${@}"
-}
-
-configure_networkmanager() {
-	local -r SERVICE="NetworkManager.service"
-	systemctl is-enabled --quiet "${SERVICE}" || \
-		systemctl enable "${SERVICE}"
 }
 
 configure_autologin() {
@@ -287,11 +291,12 @@ main() {
 	setup_sudo "${USERNAME}"
 	yay_install_setup "${USERNAME}"
 	install_default_packages "${USERNAME}" "${DEFAULT_PACKAGES[@]}"
-	configure_networkmanager
-	configure_autologin "${USERNAME}"
-	configure_backlight_brightness "${USERNAME}"
 	setup_git_profile "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
+	configure_autologin "${USERNAME}"
+	configure_backlight_brightness "${USERNAME}"
+	enable_service_systemd "NetworkManager.service"
+	enable_service_systemd "bluetooth.service"
 	remove_orphaned_packages
 
 	echo "Set up is complete! Please reboot."
