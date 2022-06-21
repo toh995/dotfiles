@@ -5,6 +5,12 @@ set -o pipefail
 
 readonly USERNAME="toh995"
 
+readonly -a DEFAULT_SYSTEMD_SERVICES=(
+	NetworkManager.service
+	bluetooth.service
+	systemd-boot-update.service
+)
+
 # IF REMOVING A PACKAGE,
 # SEARCH THE REST OF THIS SCRIPT
 readonly -a DEFAULT_PACKAGES=(
@@ -110,13 +116,6 @@ write_to_file() {
 	mkdir -p "$( dirname "${filepath}" )"
 	echo "${text}" >| "${filepath}"
 }
-
-enable_service_systemd() {
-	local -r service="${1}"
-	systemctl is-enabled --quiet "${service}" || \
-		systemctl enable "${service}"
-}
-
 
 ##################
 # MAIN FUNCTIONS #
@@ -270,6 +269,13 @@ setup_git_profile() {
 		"
 }
 
+enable_systemd_services() {
+	for service in "${@}"; do
+		systemctl is-enabled --quiet "${service}" || \
+			systemctl enable "${service}"
+	done
+}
+
 remove_orphaned_packages() {
 	local command
 	if command_exists "yay"; then
@@ -280,6 +286,7 @@ remove_orphaned_packages() {
 
 	("${command}" -Qtdq | "${command}" -Rns --noconfirm - 2&>/dev/null) || true
 }
+
 
 ########
 # MAIN #
@@ -295,8 +302,7 @@ main() {
 	setup_git_bare_repo "${USERNAME}"
 	configure_autologin "${USERNAME}"
 	configure_backlight_brightness "${USERNAME}"
-	enable_service_systemd "NetworkManager.service"
-	enable_service_systemd "bluetooth.service"
+	enable_systemd_services "${DEFAULT_SYSTEMD_SERVICES[@]}"
 	remove_orphaned_packages
 
 	echo "Set up is complete! Please reboot."
