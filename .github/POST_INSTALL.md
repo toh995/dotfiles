@@ -2,6 +2,11 @@
 ### Network Setup
 Use `nmtui`
 
+### Video Drivers
+See:
+- https://wiki.archlinux.org/title/Xorg#Driver_installation
+- https://wiki.archlinux.org/title/Hardware_video_acceleration
+
 ### Brave setup
 1. Switch to dark mode
 2. Add extensions
