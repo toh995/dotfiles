@@ -30,6 +30,10 @@ readonly -a DEFAULT_PACKAGES=(
 	bluez
 	bluez-utils
 
+	# permissioning
+	polkit
+	sudo
+
 	# sound
 	pipewire
 	pipewire-alsa
@@ -60,7 +64,6 @@ readonly -a DEFAULT_PACKAGES=(
 	nnn
 	openssh
 	python-grip
-	sudo
 	zoxide
 	zsh
 

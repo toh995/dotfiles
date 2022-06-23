@@ -3,8 +3,9 @@ Memorializing a list of my commonly used terminal commands.
 |Command|Description|
 |-|-|
 |`sudo nmtui`|Network management|
-|`sudo poweroff`||
-|`sudo reboot`||
+|`systemctl poweroff`||
+|`systemctl reboot`||
+|`systemctl suspend-then-hibernate`||
 |`btop`|System monitor|
 |`nnn`|File explorer|
 |`j ${dir_name}`|Jump to directory|
