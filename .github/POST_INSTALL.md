@@ -29,6 +29,9 @@ See:
 - https://wiki.archlinux.org/title/Xorg#Driver_installation
 - https://wiki.archlinux.org/title/Hardware_video_acceleration
 
+### Power Saving
+See: https://wiki.archlinux.org/title/Power_management#Power_saving
+
 ### Hibernation
 #### Add a swapfile
 **Reference:** https://wiki.archlinux.org/title/Swap#Swap_file
