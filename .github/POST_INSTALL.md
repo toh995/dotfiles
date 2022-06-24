@@ -3,7 +3,7 @@
 ## General
 
 ### Network Setup
-Use `nmtui`
+Use `sudo nmtui`
 
 ### Brave setup
 1. Switch to dark mode
