@@ -226,6 +226,12 @@ configure_backlight_brightness() {
 		)"
 }
 
+configure_network() {
+	# add user to the network group
+	local -r username="${1}"
+	usermod -a -G network "${username}"
+}
+
 setup_git_bare_repo() {
 	local -r username="${1}"
 	local -r user_home="$( get_home_dir "${username}" )"
@@ -306,6 +312,7 @@ main() {
 	setup_git_bare_repo "${USERNAME}"
 	configure_autologin "${USERNAME}"
 	configure_backlight_brightness "${USERNAME}"
+	configure_network "${USERNAME}"
 	enable_systemd_services "${DEFAULT_SYSTEMD_SERVICES[@]}"
 	remove_orphaned_packages
 

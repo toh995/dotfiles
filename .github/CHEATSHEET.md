@@ -2,7 +2,7 @@ Memorializing a list of my commonly used terminal commands.
 
 |Command|Description|
 |-|-|
-|`sudo nmtui`|Network management|
+|`nmtui`|Network management|
 |`systemctl poweroff`||
 |`systemctl reboot`||
 |`systemctl suspend-then-hibernate`||
