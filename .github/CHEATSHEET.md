@@ -13,5 +13,6 @@ Memorializing a list of my commonly used terminal commands.
 |`sudo mount /dev/${partition} /mnt/usbstick`|Mount a USB drive|
 |`sudo umount /dev/${partition}`|Unmount a USB drive|
 |`bluetoothctl`<ul><li>`power on/off`</li><li>`scan on/off`</li><li>`devices`</li><li>`pair ${mac_address}`</li><li>`connect ${mac_address}`</li></ul> | Bluetooth Config |
+|`trash-put` `trash-empty` `trash-list` `trash-restore` `trash-rm`| Trash Managment ([More Info](https://github.com/andreafrancia/trash-cli#readme))|
 |`grip ${md_filepath} -b`|Markdown file preview|
 |`bright` `bright max` `bright min` `bright +100` `bright -50`|Adjust screen brightness|

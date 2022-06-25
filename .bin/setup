@@ -59,11 +59,12 @@ readonly -a DEFAULT_PACKAGES=(
 	# commandline utilities
 	btop
 	git
-	man-db
+	man-db # man pages
 	neofetch
 	nnn
 	openssh
 	python-grip
+	trash-cli
 	zoxide
 	zsh
 
