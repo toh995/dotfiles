@@ -54,6 +54,15 @@ esac
 source "${XDG_CONFIG_HOME}/powerlevel10k/.p10k.zsh"
 
 ##########
+# python #
+##########
+export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}/python/pythonstartup.py"
+export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_history"
+
+[[ -f "${PYTHONHISTFILE}" ]] || \
+	mkdir -p "$( dirname "${PYTHONHISTFILE}" )"
+
+##########
 # zoxide #
 ##########
 eval "$(zoxide init zsh)"
