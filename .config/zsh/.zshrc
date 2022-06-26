@@ -3,11 +3,14 @@ set -o noclobber
 set -o pipefail
 
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
-alias j="z" # zoxide
 alias ls="ls -1a"
-alias ta="tmux attach-session -t"
-alias tls="tmux ls"
-alias tn="tmux new-session -s"
+
+# power management aliases
+alias hibernate="systemctl hibernate"
+alias poweroff="systemctl poweroff"
+alias reboot="systemctl reboot"
+alias suspend="systemctl suspend"
+alias suspend-then-hibernate="systemctl suspend-then-hibernate"
 
 help() {
 	local -r command="${1}"
@@ -62,7 +65,15 @@ export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_hist
 [[ -f "${PYTHONHISTFILE}" ]] || \
 	mkdir -p "$( dirname "${PYTHONHISTFILE}" )"
 
+########
+# tmux #
+########
+alias ta="tmux attach-session -t"
+alias tls="tmux ls"
+alias tn="tmux new-session -s"
+
 ##########
 # zoxide #
 ##########
 eval "$(zoxide init zsh)"
+alias j="z"

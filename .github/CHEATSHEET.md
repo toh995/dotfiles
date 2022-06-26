@@ -3,11 +3,11 @@ Memorializing a list of my commonly used terminal commands.
 |Command|Description|
 |-|-|
 |`nmtui`|Network management|
-|`systemctl poweroff`||
-|`systemctl reboot`||
-|`systemctl suspend`||
-|`systemctl hibernate`||
-|`systemctl suspend-then-hibernate`||
+|`poweroff`||
+|`reboot`||
+|`suspend`||
+|`hibernate`||
+|`suspend-then-hibernate`||
 |`btop`|System monitor|
 |`nnn`|File explorer|
 |`j ${dir_name}`|Jump to directory|
