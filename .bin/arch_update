@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+set -e
+set -o noclobber
+set -o pipefail
+
+# full upgrade
+sudo pacman -Syu
+yay -Syu
+
+# remove orphaned packages
+sudo pacman -Qtdq | sudo pacman -Rns - || true
+yay -Qtdq | yay -Rns - || true
+
+# clean the package cache
+yay -Sc
