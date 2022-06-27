@@ -13,3 +13,11 @@ yay -Qtdq | yay -Rns - || true
 
 # clean the package cache
 yay -Sc
+
+# reboot the system
+declare should_reboot
+read -N 1 -p "Arch update is finished! Would you like to reboot? (y/n) " should_reboot
+
+if [[ "${should_reboot}" == "y" ]]; then
+	systemctl reboot
+fi
