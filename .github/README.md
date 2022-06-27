@@ -1,6 +1,6 @@
 # dotfiles
 
-1. Install the OS normally (i.e. [Arch Install Notes](ARCH_INSTALL_NOTES.md))
+1. Install the OS normally (i.e. [Arch Install Notes](INSTALL_NOTES_ARCH.md))
 2. Log in as root
 3. Run the command:
 ```bash
