@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+set -e
+set -o noclobber
+set -o pipefail
+
+if [[ -z "$( pgrep spotifyd )" ]]; then
+	spotifyd
+fi
+
+/usr/bin/spt

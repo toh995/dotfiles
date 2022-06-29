@@ -17,6 +17,19 @@ help() {
 	bash <<< "help ${command} | less"
 }
 
+#########
+# gnupg #
+#########
+export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local.share}/gnupg"
+
+# if the directory $GNUPGHOME doesn't exist, then create it.
+# also ensure permissions are adjusted appropriately.
+if ! [[ -d "${GNUPGHOME}" ]]; then
+	mkdir -p "${GNUPGHOME}"
+	chown -R "$(whoami)" "${GNUPGHOME}"
+	chmod 700 "${GNUPGHOME}"
+fi
+
 ########
 # grip #
 ########
@@ -56,6 +69,11 @@ esac
 
 source "${XDG_CONFIG_HOME}/powerlevel10k/.p10k.zsh"
 
+########
+# pass #
+########
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
+
 ##########
 # python #
 ##########
@@ -64,6 +82,11 @@ export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_hist
 
 [[ -f "${PYTHONHISTFILE}" ]] || \
 	mkdir -p "$( dirname "${PYTHONHISTFILE}" )"
+
+########
+# rust #
+########
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 
 ########
 # tmux #

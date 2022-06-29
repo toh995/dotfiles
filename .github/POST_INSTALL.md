@@ -22,6 +22,9 @@ Use `sudo nmtui`
 4. Run `github_ssh_setup`
 5. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
 
+### Spotify setup
+Run `spotify_setup`
+
 ## Arch Linux
 
 ### Video Drivers
