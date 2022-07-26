@@ -1,7 +1,4 @@
 #!/usr/bin/env zsh
-set -e
-set -o noclobber
-set -o pipefail
 
 # Start the x server
 if [[ "${OSTYPE}" != "darwin"* ]]; then
