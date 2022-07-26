@@ -75,7 +75,7 @@ setup_git_bare_repo() {
 
 	mkdir -p "${repo_dir}"
 	git clone --bare "${repo_url}" "${repo_dir}"
-	alias dot="git --git-dir="${repo_dir}" --work-tree=${HOME}"
+	alias dot="git --git-dir=${repo_dir} --work-tree=${HOME}"
 	dot checkout
 	dot config --local status.showUntrackedFiles no
 }
