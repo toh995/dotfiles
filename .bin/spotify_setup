@@ -6,6 +6,7 @@ set -o pipefail
 # install stuff
 case "${OSTYPE}" in
 	"darwin"*)
+		brew install gnupg pass spotifyd spotify-tui
 		;;
 	"linux"*)
 		[[ "$(cat /etc/os-release)" =~ "ID=arch" ]] && \
