@@ -102,7 +102,9 @@ install_brew() {
 	# terminal utilities
 	brew install btop
 	brew install neofetch
+	brew install neovim
 	brew install nnn
+	brew install trash
 	brew install zoxide
 
 	# powerlevel10k
