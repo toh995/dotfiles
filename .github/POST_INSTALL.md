@@ -25,6 +25,10 @@ Use `nmtui`
 ### Spotify setup
 Run `spotify_setup`
 
+## macOS
+- May need to log in to the apple account
+- When connecting a new keyboard, remap the command and option keys at `System Preferences > Keyboard > Modifier Keys...`
+
 ## Arch Linux
 
 ### Video Drivers

@@ -16,6 +16,15 @@ help() {
 	local -r command="${1}"
 	bash <<< "help ${command} | less"
 }
+########
+# brew #
+########
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+	# make brew available in PATH
+	eval "$(/opt/homebrew/bin/brew shellenv"")"
+
+	export HOMEBREW_NO_ANALYTICS=1
+fi
 
 #########
 # gnupg #
