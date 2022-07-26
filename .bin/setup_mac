@@ -140,9 +140,9 @@ install_powerlevel10k_font() {
 main() {
 	system_setup
 	setup_git_profile
-	setup_git_bare_repo
 	install_brew
 	install_powerlevel10k_font
+	setup_git_bare_repo
 
 	# reboot
 	local should_reboot
