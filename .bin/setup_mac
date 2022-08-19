@@ -97,8 +97,9 @@ install_brew() {
 
 	# apps
 	brew install --cask brave-browser
-	brew install --cask keepassxc
-	brew install --cask microsoft-edge
+	brew install --cask vscodium
+	# brew install --cask keepassxc
+	# brew install --cask microsoft-edge
 
 	# terminal utilities
 	brew install btop
