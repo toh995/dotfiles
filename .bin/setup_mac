@@ -97,7 +97,6 @@ install_brew() {
 
 	# apps
 	brew install --cask brave-browser
-	brew install --cask vscodium
 	# brew install --cask keepassxc
 	# brew install --cask microsoft-edge
 
@@ -139,12 +138,53 @@ install_powerlevel10k_font() {
 	cd "${og_directory}"
 }
 
+setup_vscode() {
+	brew install --cask visual-studio-code
+	# brew install --cask vscodium
+
+	# ensure the settings.json file exists
+	local -r filepath="${HOME}/Library/Application Support/Code/User/settings.json"
+	if [[ ! -f "${filepath}" ]]; then
+		mkdir -p "$( dirname ${filepath} )"
+		touch "${filepath}"
+	fi
+
+	# create symlink for settings.json
+	ln -si \
+		"${HOME}/.config/vscode/settings.json" \
+		"${HOME}/Library/Application Support/Code/User/settings.json"
+
+	# install extensions
+	local -ar extensions=(
+		dbaeumer.vscode-eslint
+		editorconfig.editorconfig
+		eamodio.gitlens
+		esbenp.prettier-vscode
+		lifeart.vscode-ember-unstable
+		rubymaniac.vscode-direnv
+		vscodevim.vim
+	)
+
+	for i in ${extensions[@]}; do
+	  code --install-extension "${i}"
+	done
+
+	# enable key-repeating, for the vim extension
+	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+}
+
 main() {
 	system_setup
 	setup_git_profile
 	install_brew
 	install_powerlevel10k_font
 	setup_git_bare_repo
+
+	local should_setup_vscode
+	read -N 1 -p "Would you like to install and set up VS Code? " should_setup_vscode
+	if [[ "${should_setup_vscode}" == "y" ]]; then
+		setup_vscode
+	fi
 
 	# reboot
 	local should_reboot
