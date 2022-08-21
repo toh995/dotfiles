@@ -102,6 +102,7 @@ install_brew() {
 
 	# terminal utilities
 	brew install btop
+	brew install less
 	brew install neofetch
 	brew install neovim
 	brew install nnn
