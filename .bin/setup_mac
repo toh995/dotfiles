@@ -63,9 +63,9 @@ setup_git_profile() {
 
 	# write to the profile
 	{
-		echo '[user]'
-		echo '	name = ${name}'
-		echo '	email = ${email}'
+		echo "[user]"
+		echo "	name = ${name}"
+		echo "	email = ${email}"
 	} >> ${filepath}
 }
 
