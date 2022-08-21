@@ -26,6 +26,13 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 	export HOMEBREW_NO_ANALYTICS=1
 fi
 
+
+##########
+# direnv #
+##########
+declare direnv_exists=$(command -v "direnv")
+[[ "${direnv_exists}" ]] && eval "$(direnv hook zsh)"
+
 #########
 # gnupg #
 #########
@@ -58,9 +65,9 @@ export LESS_TERMCAP_se="${reset_color}"
 export LESS_TERMCAP_us="${fg_bold[green]}"
 export LESS_TERMCAP_ue="${reset_color}"
 
-########
-# nnn  #
-########
+#######
+# nnn #
+#######
 export NNN_OPTS="H"
 
 #################
@@ -103,6 +110,12 @@ export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 alias ta="tmux attach-session -t"
 alias tls="tmux ls"
 alias tn="tmux new-session -s"
+
+#########
+# volta #
+#########
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 
 ##########
 # zoxide #
