@@ -69,6 +69,7 @@ readonly -a DEFAULT_PACKAGES=(
 	xclip
 	zoxide
 	zsh
+	zsh-autosuggestions
 
 	# powerlevel10k
 	ttf-meslo-nerd-font-powerlevel10k

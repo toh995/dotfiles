@@ -16,13 +16,18 @@ help() {
 	local -r command="${1}"
 	bash <<< "help ${command} | less"
 }
+
+# ZSH Autosuggestions
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+	source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+fi
+
 ########
 # brew #
 ########
 if [[ "${OSTYPE}" == "darwin"* ]]; then
 	# make brew available in PATH
 	eval "$(/opt/homebrew/bin/brew shellenv"")"
-
 	export HOMEBREW_NO_ANALYTICS=1
 fi
 

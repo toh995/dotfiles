@@ -110,6 +110,7 @@ install_brew() {
 	brew install tig
 	brew install trash
 	brew install zoxide
+	brew install zsh-autosuggestions
 
 	# powerlevel10k
 	brew install romkatv/powerlevel10k/powerlevel10k
