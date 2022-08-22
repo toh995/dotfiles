@@ -17,9 +17,11 @@ help() {
 	bash <<< "help ${command} | less"
 }
 
-# ZSH Autosuggestions
+# ZSH autosuggestions
+# ZSH syntax highlighting
 if [[ "${OSTYPE}" == "darwin"* ]]; then
 	source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+	source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
 ########

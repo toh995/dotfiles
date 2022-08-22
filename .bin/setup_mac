@@ -111,6 +111,7 @@ install_brew() {
 	brew install trash
 	brew install zoxide
 	brew install zsh-autosuggestions
+	brew install zsh-syntax-highlighting
 
 	# powerlevel10k
 	brew install romkatv/powerlevel10k/powerlevel10k
