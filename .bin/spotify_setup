@@ -28,7 +28,7 @@ if (( "${num_keys}" != 1 )); then
 	exit 1
 fi
 
-declare -r key_id="$( cut --delimiter=":" --fields=5 <<< "${public_keys}" )"
+declare -r key_id="$( cut -d ":" -f 5 <<< "${public_keys}" )"
 
 # initialize pass
 pass init "${key_id}"
