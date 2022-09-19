@@ -1,4 +1,7 @@
 {
+    // always open files in a new tab
+    "workbench.editor.enablePreview": false,
+
     // lint/prettier
     "eslint.format.enable": true,
     "eslint.packageManager": "yarn",
