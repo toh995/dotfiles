@@ -107,6 +107,7 @@ install_brew() {
 	brew install neofetch
 	brew install neovim
 	brew install nnn
+	brew install ripgrep
 	brew install tig
 	brew install trash
 	brew install zoxide
