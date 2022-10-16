@@ -111,6 +111,11 @@ export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_hist
 ########
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 
+#######
+# tig #
+#######
+alias ts="tig status"
+
 ########
 # tmux #
 ########
