@@ -103,6 +103,7 @@ install_brew() {
 
 	# terminal utilities
 	brew install btop
+	brew install git-delta
 	brew install less
 	brew install neofetch
 	brew install neovim
