@@ -37,4 +37,5 @@
             "after": ["<C-W>", "<C-L>"],
         },
     ],
+    "window.zoomLevel": -1,
 }
