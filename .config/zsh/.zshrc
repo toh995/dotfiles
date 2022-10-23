@@ -3,6 +3,7 @@ set -o noclobber
 set -o pipefail
 
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
+alias lgd="lazygit --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias ls="ls -1a"
 
 # power management aliases
@@ -25,7 +26,6 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 	eval "$(/opt/homebrew/bin/brew shellenv"")"
 	export HOMEBREW_NO_ANALYTICS=1
 fi
-
 
 ##########
 # direnv #
@@ -50,6 +50,11 @@ fi
 # grip #
 ########
 export GRIPHOME="${XDG_CONFIG_HOME:-$HOME/.config}/grip"
+
+###########
+# lazygit #
+###########
+alias lg="lazygit"
 
 ########
 # less #

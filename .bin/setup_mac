@@ -104,12 +104,13 @@ install_brew() {
 	# terminal utilities
 	brew install btop
 	brew install git-delta
+	brew install jesseduffield/lazygit/lazygit
 	brew install less
 	brew install neofetch
 	brew install neovim
 	brew install nnn
 	brew install ripgrep
-	brew install tig
+	brew install tig # do we need to remove this?? (replaced by lazygit?)
 	brew install trash
 	brew install zoxide
 	brew install zsh-autosuggestions
