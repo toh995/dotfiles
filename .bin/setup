@@ -59,12 +59,15 @@ readonly -a DEFAULT_PACKAGES=(
 	# commandline utilities
 	btop
 	git
+	git-delta
+	lazygit
 	man-db # man pages
 	neofetch
 	nnn
 	openssh
 	python-grip
-	tig
+	ripgrep
+	tig # do we need to remove this?? (replaced by lazygit?)
 	trash-cli
 	xclip
 	zoxide
