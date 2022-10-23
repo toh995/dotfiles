@@ -12,8 +12,10 @@
 [add.interactive]
     useBuiltin = false
 [delta]
-    navigate = true    # use n and N to move between diff sections
-	line-numbers = true
+	diff-highlight = true # custom styling
+	line-numbers = true   # show line numbers
+    navigate = true       # use n and N to move between diff sections
+	paging = always       # always show output in a pager
 [merge]
     conflictstyle = diff3
 [diff]
