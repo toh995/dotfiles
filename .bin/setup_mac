@@ -37,10 +37,12 @@ system_setup() {
 	defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position Bluetooth" -int 214
 	defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position WiFi" -int 178
 
-	# TODO:
 	# Set a blazingly fast keyboard repeat rate
 	defaults write NSGlobalDomain KeyRepeat -int 2
 	defaults write NSGlobalDomain InitialKeyRepeat -int 15
+
+	# set mouse tracking speed
+	defaults write -g com.apple.mouse.scaling -int 3
 
 	# TODO:
 	# Set fn keys?
