@@ -101,6 +101,7 @@ install_brew() {
 	brew install --cask brave-browser
 	# brew install --cask keepassxc
 	# brew install --cask microsoft-edge
+	# brew install --cask rectangle
 	# brew install --cask signal
 	# brew install --cask tuple
 
