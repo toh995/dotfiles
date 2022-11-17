@@ -34,6 +34,11 @@ declare direnv_exists=$(command -v "direnv")
 [[ "${direnv_exists}" ]] && eval "$(direnv hook zsh)"
 
 #########
+# ghcup #
+#########
+[[ -f "${HOME}/.ghcup/env" ]] && source "${HOME}/.ghcup/env"
+
+#########
 # gnupg #
 #########
 export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local.share}/gnupg"
