@@ -1,41 +1,25 @@
 {
-    // always open files in a new tab
-    "workbench.editor.enablePreview": false,
+  // always open files in a new tab
+  "workbench.editor.enablePreview": false,
 
-    // lint/prettier
-    "eslint.format.enable": true,
-    "eslint.packageManager": "yarn",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
+  // vim
+  // re-map keys to navigate through splits
+  "vim.normalModeKeyBindings": [
+    {
+      "before": ["<C-H>"],
+      "after": ["<C-W>", "<C-H>"]
     },
-    "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    {
+      "before": ["<C-J>"],
+      "after": ["<C-W>", "<C-J>"]
     },
-    "[handlebars]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true,
-        "files.insertFinalNewline": false,
-      },
-    
-    // vim
-    // re-map keys to navigate through splits
-    "vim.normalModeKeyBindings": [
-        {
-            "before":["<C-H>"],
-            "after": ["<C-W>", "<C-H>"],
-        },
-        {
-            "before":["<C-J>"],
-            "after": ["<C-W>", "<C-J>"],
-        },
-        {
-            "before":["<C-K>"],
-            "after": ["<C-W>", "<C-K>"],
-        },
-        {
-            "before":["<C-L>"],
-            "after": ["<C-W>", "<C-L>"],
-        },
-    ],
-    "window.zoomLevel": -1,
+    {
+      "before": ["<C-K>"],
+      "after": ["<C-W>", "<C-K>"]
+    },
+    {
+      "before": ["<C-L>"],
+      "after": ["<C-W>", "<C-L>"]
+    }
+  ]
 }
