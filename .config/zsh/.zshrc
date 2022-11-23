@@ -107,6 +107,14 @@ export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
 [[ -d "${PASSWORD_STORE_DIR}" ]] || \
 	mkdir -p "${PASSWORD_STORE_DIR}"
 
+########
+# pnpm #
+########
+export PNPM_HOME="/Users/toh/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+alias p="pnpm"
+alias pi="pnpm install"
+
 ##########
 # python #
 ##########
