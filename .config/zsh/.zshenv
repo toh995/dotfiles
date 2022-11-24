@@ -21,7 +21,7 @@ export SAVEHIST=1000
 	mkdir -p "$( dirname "${HISTFILE}" )"
 
 # X11
-export XAUTHORITY="${XDG_RUNTIME_DIR}/Xauthority"
+# export XAUTHORITY="${XDG_RUNTIME_DIR}/Xauthority"
 
 # Default apps
 export BROWSER="brave"

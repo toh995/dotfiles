@@ -93,7 +93,7 @@ case "${OSTYPE}" in
 		source "$(brew --prefix)"/opt/powerlevel10k/powerlevel10k.zsh-theme
 		;;
 	"linux"*)
-		[[ "$(cat /etc/os-release)" =~ "ID=arch" ]] && \
+		[[ "$(cat /etc/os-release)" =~ "ID=arch|ID=endeavouros" ]] && \
 			source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 		;;
 esac
@@ -158,4 +158,7 @@ alias j="z"
 if [[ "${OSTYPE}" == "darwin"* ]]; then
 	source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 	source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [[ "$(cat /etc/os-release)" =~ "ID=arch|ID=endeavouros" ]]; then
+	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
