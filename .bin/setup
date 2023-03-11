@@ -71,6 +71,7 @@ readonly -a DEFAULT_PACKAGES=(
 	tig # do we need to remove this?? (replaced by lazygit?)
 	trash-cli
 	xclip
+	yt-dlp
 	zoxide
 	zsh
 	zsh-autosuggestions
