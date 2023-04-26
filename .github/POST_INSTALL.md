@@ -35,6 +35,17 @@ Run `spotify_setup`
 - May need to log in to the apple account
 - When connecting a new keyboard, remap the command and option keys at `System Preferences > Keyboard > Modifier Keys...`
 
+## Gnome
+To load the gnome settings config, run:
+```bash
+dconf load / < $XDG_CONFIG_HOME/gnome-settings.ini
+```
+
+To save the gnome settings config, run:
+```bash
+dconf dump / > $XDG_CONFIG_HOME/gnome-settings.ini
+```
+
 ## Arch Linux
 
 ### Video Drivers
