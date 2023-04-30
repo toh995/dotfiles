@@ -118,6 +118,7 @@ install_brew() {
 	brew install ripgrep
 	brew install tig # do we need to remove this?? (replaced by lazygit?)
 	brew install trash
+	brew install youtube-dl
 	brew install zoxide
 	brew install zsh-autosuggestions
 	brew install zsh-syntax-highlighting
