@@ -69,7 +69,6 @@ readonly -a DEFAULT_PACKAGES=(
 	openssh
 	python-grip
 	ripgrep
-	tig # do we need to remove this?? (replaced by lazygit?)
 	trash-cli
 	xclip
 	yt-dlp

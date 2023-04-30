@@ -116,7 +116,6 @@ install_brew() {
 	brew install neovim
 	brew install nnn
 	brew install ripgrep
-	brew install tig # do we need to remove this?? (replaced by lazygit?)
 	brew install trash
 	brew install youtube-dl
 	brew install zoxide
