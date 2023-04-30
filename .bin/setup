@@ -60,6 +60,7 @@ readonly -a DEFAULT_PACKAGES=(
 	btop
 	git
 	git-delta
+	lazydocker
 	lazygit
 	man-db # man pages
 	mpv

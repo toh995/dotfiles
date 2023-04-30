@@ -56,6 +56,11 @@ fi
 ########
 export GRIPHOME="${XDG_CONFIG_HOME:-$HOME/.config}/grip"
 
+##############
+# lazydocker #
+##############
+alias ld="lazydocker"
+
 ###########
 # lazygit #
 ###########

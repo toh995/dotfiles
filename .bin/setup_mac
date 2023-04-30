@@ -109,6 +109,7 @@ install_brew() {
 	# terminal utilities
 	brew install btop
 	brew install git-delta
+	brew install jesseduffield/lazydocker/lazydocker
 	brew install jesseduffield/lazygit/lazygit
 	brew install less
 	brew install neofetch
