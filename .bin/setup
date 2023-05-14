@@ -55,6 +55,7 @@ readonly -a DEFAULT_PACKAGES=(
 	# apps
 	brave-bin
 	keepassxc
+	zathura
 
 	# commandline utilities
 	btop
