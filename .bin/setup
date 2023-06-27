@@ -260,36 +260,6 @@ setup_git_bare_repo() {
 		"
 }
 
-setup_git_profile() {
-	local -r username="${1}"
-	local name
-	local email
-
-	read -p "Enter your git name: " name
-	read -p "Enter your git email: " email
-
-	local -r home_dir="$( get_home_dir "${username}" )"
-	local -r filepath="${home_dir}/.config/git/profile"
-
-	run_as_user "${username}" \
-		"
-			set -e
-
-			# ensure the profile exists
-			if [[ ! -f ${filepath} ]]; then
-				mkdir -p \$(dirname ${filepath})
-				touch ${filepath}
-			fi
-
-			# write to the profile
-			{
-				echo '[user]'
-				echo '	name = ${name}'
-				echo '	email = ${email}'
-			} >> ${filepath}
-		"
-}
-
 enable_systemd_services() {
 	for service in "${@}"; do
 		systemctl is-enabled --quiet "${service}" || \
@@ -319,7 +289,6 @@ main() {
 	setup_sudo "${USERNAME}"
 	yay_install_setup "${USERNAME}"
 	install_default_packages "${USERNAME}" "${DEFAULT_PACKAGES[@]}"
-	setup_git_profile "${USERNAME}"
 	setup_git_bare_repo "${USERNAME}"
 	configure_autologin "${USERNAME}"
 	configure_backlight_brightness "${USERNAME}"

@@ -48,29 +48,6 @@ system_setup() {
 	# Set fn keys?
 }
 
-setup_git_profile() {
-	local name
-	local email
-
-	read -p "Enter your git name: " name
-	read -p "Enter your git email: " email
-
-	local -r filepath="${HOME}/.config/git/profile"
-
-	# ensure the profile exists
-	if [[ ! -f "${filepath}" ]]; then
-		mkdir -p "$( dirname ${filepath} )"
-		touch "${filepath}"
-	fi
-
-	# write to the profile
-	{
-		echo "[user]"
-		echo "	name = ${name}"
-		echo "	email = ${email}"
-	} >> ${filepath}
-}
-
 setup_git_bare_repo() {
 	local -r repo_dir="${HOME}/.dotfiles"
 	local -r repo_url="https://github.com/toh995/dotfiles.git"
@@ -192,7 +169,6 @@ setup_vscode() {
 
 main() {
 	system_setup
-	setup_git_profile
 	install_brew
 	install_powerlevel10k_font
 	setup_git_bare_repo
