@@ -38,12 +38,12 @@ Run `spotify_setup`
 ## Gnome
 To load the gnome settings config, run:
 ```bash
-dconf load / < $XDG_CONFIG_HOME/gnome-settings.ini
+dconf load / < $XDG_CONFIG_HOME/gnome-settings/config.ini
 ```
 
 To save the gnome settings config, run:
 ```bash
-dconf dump / > $XDG_CONFIG_HOME/gnome-settings.ini
+dconf dump / >! $XDG_CONFIG_HOME/gnome-settings/config.ini
 ```
 
 ## Arch Linux
