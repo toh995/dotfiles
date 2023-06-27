@@ -2,10 +2,6 @@
 
 ## General
 
-### Network Setup
-
-Use `nmtui`
-
 ### Brave setup
 
 1. Switch to dark mode
@@ -18,22 +14,15 @@ Use `nmtui`
 
 ### GitHub ssh setup
 
-1. Log in to github
-   - To access the USB, use [manual mounting](https://wiki.archlinux.org/title/USB_storage_devices#Manual_mounting)
-   - Or, clone stuff to $XDG_DATA_HOME
-2. Go to Profile > Settings > Developer Settings > Personal Access Tokens
-3. Generate a new token, with `admin:public_key` selected
-4. Run `github_ssh_setup`
-5. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
+1. Follow the [GitHub instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+2. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
+
+### Password manager
+Clone stuff to $XDG_DATA_HOME
 
 ### Spotify setup
 
 Run `spotify_setup`
-
-## macOS
-
-- May need to log in to the apple account
-- When connecting a new keyboard, remap the command and option keys at `System Preferences > Keyboard > Modifier Keys...`
 
 ## Gnome
 To load the gnome settings config, run:
@@ -46,7 +35,17 @@ To save the gnome settings config, run:
 dconf dump / >! $XDG_CONFIG_HOME/gnome-settings/config.ini
 ```
 
+## macOS
+
+- May need to log in to the apple account
+- When connecting a new keyboard, remap the command and option keys at `System Preferences > Keyboard > Modifier Keys...`
+
 ## Arch Linux
+
+### Network Setup
+
+Use `nmtui`
+
 
 ### Video Drivers
 
