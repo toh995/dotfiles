@@ -80,6 +80,7 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# powerlevel10k
 	ttf-meslo-nerd-font-powerlevel10k
+	ttf-jetbrains-mono-nerd
 	zsh-theme-powerlevel10k-git
 )
 
