@@ -103,6 +103,9 @@ export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_hist
 # rust
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 
+# tealdeer
+export TEALDEER_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tealdeer"
+
 # tmux
 alias ta="tmux attach-session -t"
 alias tls="tmux ls"
