@@ -94,6 +94,7 @@ install_brew() {
 	brew install neovim
 	brew install nnn
 	brew install ripgrep
+	brew install spotify_player
 	brew install tealdeer
 	brew install trash
 	brew install youtube-dl
