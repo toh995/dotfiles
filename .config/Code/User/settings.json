@@ -1,0 +1,5 @@
+{
+  // always open files in a new tab
+  "workbench.editor.enablePreview": false,
+  "editor.fontFamily": "JetBrainsMono Nerd Font"
+}
