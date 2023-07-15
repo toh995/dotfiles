@@ -78,7 +78,7 @@ case "${OSTYPE}" in
 		source "$(brew --prefix)"/opt/powerlevel10k/powerlevel10k.zsh-theme
 		;;
 	"linux"*)
-		[[ "$(cat /etc/os-release)" =~ "ID=arch|ID=endeavouros" ]] && \
+		[[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]] && \
 			source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 		;;
 esac
