@@ -13,9 +13,17 @@
    - Search for downloads
 
 ### GitHub ssh setup
-
 1. Follow the [GitHub instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 2. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
+
+### Neovim
+Clone dotfiles:
+```bash
+cd ~/.config
+git clone git@github.com:toh995/nvim.git
+```
+
+Then, open neovim to bootstrap/install packages
 
 ### Password manager
 Clone stuff to $XDG_DATA_HOME
