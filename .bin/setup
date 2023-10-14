@@ -60,6 +60,7 @@ readonly -a DEFAULT_PACKAGES=(
 
 	# commandline utilities
 	btop
+	eza
 	git
 	git-delta
 	lazydocker
