@@ -5,6 +5,7 @@ set -o pipefail
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias lgd="lazygit --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias ls="ls -1a"
+[[ $OSTYPE == 'darwin'* ]] && alias trash="trash -F"
 
 # power management aliases
 alias hibernate="systemctl hibernate"
