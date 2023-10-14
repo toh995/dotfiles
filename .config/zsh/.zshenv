@@ -26,5 +26,6 @@ export SAVEHIST=1000
 # Default apps
 export BROWSER="brave"
 export EDITOR="nvim"
+export MANPAGER="less"
 export PAGER="less"
 export VISUAL="nvim"
