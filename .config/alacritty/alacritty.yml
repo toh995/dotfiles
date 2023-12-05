@@ -7,7 +7,8 @@ font:
     # For borland
     # family: "BigBlueTermPlusNerdFont"
     # family: "GohuFontuni14NerdFont"
-    family: "ComicShannsMono Nerd Font"
+    # family: "ComicShannsMono Nerd Font"
+    family: "Hack Nerd Font"
 
 # For borland
 # colors:
