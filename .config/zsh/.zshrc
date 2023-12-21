@@ -47,6 +47,12 @@ if ! [[ -d "${GNUPGHOME}" ]]; then
 	chmod 700 "${GNUPGHOME}"
 fi
 
+# go
+export GOPATH="${XDG_DATA_HOME}/go"
+export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
+export PATH="${GOPATH}/bin:${PATH}"
+
+
 # grip
 export GRIPHOME="${XDG_CONFIG_HOME:-$HOME/.config}/grip"
 
