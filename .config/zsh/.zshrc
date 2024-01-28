@@ -84,7 +84,7 @@ export NNN_OPTS="H"
 # powerlevel10k
 case "${OSTYPE}" in
 	"darwin"*)
-		source "$(brew --prefix)"/opt/powerlevel10k/powerlevel10k.zsh-theme
+		source "$(brew --prefix)"/share/powerlevel10k/powerlevel10k.zsh-theme
 		;;
 	"linux"*)
 		[[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]] && \
