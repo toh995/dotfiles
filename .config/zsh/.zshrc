@@ -144,10 +144,15 @@ alias j="z"
 
 # ZSH autosuggestions
 # ZSH syntax highlighting
+# ZSH vi-mode
 if [[ "${OSTYPE}" == "darwin"* ]]; then
 	source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 	source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+	source "${HOMEBREW_PREFIX}/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 elif [[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]]; then
 	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+	source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 fi
+# for zsh vi-mode, remap the `esc` key
+export ZVM_VI_INSERT_ESCAPE_BINDKEY=kj

@@ -81,6 +81,7 @@ readonly -a DEFAULT_PACKAGES=(
 	zsh
 	zsh-autosuggestions
 	zsh-syntax-highlighting
+	zsh-vi-mode
 
 	# powerlevel10k
 	ttf-meslo-nerd-font-powerlevel10k

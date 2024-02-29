@@ -104,6 +104,7 @@ install_brew() {
 	brew install zoxide
 	brew install zsh-autosuggestions
 	brew install zsh-syntax-highlighting
+	brew install zsh-vi-mode
 
 	# neovim dependencies
 	brew install node

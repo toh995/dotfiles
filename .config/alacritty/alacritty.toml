@@ -22,7 +22,7 @@ normal.family = "DejaVuSansM Nerd Font"
 
 [cursor]
 blink_interval = 500
-style.shape = "Block"
+style.shape = "Beam"
 style.blinking = "Always"
 
 [window]
