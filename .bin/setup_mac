@@ -4,198 +4,198 @@ set -o noclobber
 set -o pipefail
 
 system_setup() {
-	# disable the chime on startup
-	sudo nvram StartupMute="%01"
+  # disable the chime on startup
+  sudo nvram StartupMute="%01"
 
-	# enable dark mode
-	defaults write NSGlobalDomain "AppleInterfaceStyle" -string "Dark"
+  # enable dark mode
+  defaults write NSGlobalDomain "AppleInterfaceStyle" -string "Dark"
 
-	# set the scroll direction
-	defaults write NSGlobalDomain "com.apple.swipescrolldirection" -bool false
+  # set the scroll direction
+  defaults write NSGlobalDomain "com.apple.swipescrolldirection" -bool false
 
-	# set up the dock
-	defaults delete com.apple.dock "persistent-apps"
-	defaults delete com.apple.dock "recent-apps"
-	defaults write com.apple.dock "show-recents" -bool false
-	defaults write com.apple.dock "autohide" -bool true
-	defaults write com.apple.dock "autohide-delay" -float 0
-	defaults write com.apple.dock "autohide-time-modifier" -float 0
-	defaults write com.apple.dock "mineffect" -string "scale"
+  # set up the dock
+  defaults delete com.apple.dock "persistent-apps"
+  defaults delete com.apple.dock "recent-apps"
+  defaults write com.apple.dock "show-recents" -bool false
+  defaults write com.apple.dock "autohide" -bool true
+  defaults write com.apple.dock "autohide-delay" -float 0
+  defaults write com.apple.dock "autohide-time-modifier" -float 0
+  defaults write com.apple.dock "mineffect" -string "scale"
 
-	# menubar
-	# show battery percentage
-	defaults write com.apple.controlcenter.plist "BatteryShowPercentage" -bool true
+  # menubar
+  # show battery percentage
+  defaults write com.apple.controlcenter.plist "BatteryShowPercentage" -bool true
 
-	# hide the spotlight icon in the menubar
-	defaults write com.apple.Spotlight "MenuItemHidden" -int 1
+  # hide the spotlight icon in the menubar
+  defaults write com.apple.Spotlight "MenuItemHidden" -int 1
 
-	# show the blutetooth icon
-	defaults write com.apple.controlcenter.plist "Bluetooth" -int 18
+  # show the blutetooth icon
+  defaults write com.apple.controlcenter.plist "Bluetooth" -int 18
 
-	# configure the positioning of menubar items
-	defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position Battery" -int 246
-	defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position Bluetooth" -int 214
-	defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position WiFi" -int 178
+  # configure the positioning of menubar items
+  defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position Battery" -int 246
+  defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position Bluetooth" -int 214
+  defaults write com.apple.controlcenter.plist "NSStatusItem Preferred Position WiFi" -int 178
 
-	# Set a blazingly fast keyboard repeat rate
-	defaults write NSGlobalDomain KeyRepeat -int 2
-	defaults write NSGlobalDomain InitialKeyRepeat -int 15
+  # Set a blazingly fast keyboard repeat rate
+  defaults write NSGlobalDomain KeyRepeat -int 2
+  defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
-	# set mouse tracking speed
-	defaults write -g com.apple.mouse.scaling -int 3
+  # set mouse tracking speed
+  defaults write -g com.apple.mouse.scaling -int 3
 
-	# TODO:
-	# Set fn keys?
+  # TODO:
+  # Set fn keys?
 }
 
 setup_git_bare_repo() {
-	local -r repo_dir="${HOME}/.dotfiles"
-	local -r repo_url="https://github.com/toh995/dotfiles.git"
+  local -r repo_dir="${HOME}/.dotfiles"
+  local -r repo_url="https://github.com/toh995/dotfiles.git"
 
-	mkdir -p "${repo_dir}"
-	git clone --bare "${repo_url}" "${repo_dir}"
-	alias dot="git --git-dir=${repo_dir} --work-tree=${HOME}"
-	dot checkout
-	dot config --local status.showUntrackedFiles no
+  mkdir -p "${repo_dir}"
+  git clone --bare "${repo_url}" "${repo_dir}"
+  alias dot="git --git-dir=${repo_dir} --work-tree=${HOME}"
+  dot checkout
+  dot config --local status.showUntrackedFiles no
 }
 
 install_brew() {
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-	# Make brew available in PATH
-	eval "$(/opt/homebrew/bin/brew shellenv"")"
+  # Make brew available in PATH
+  eval "$(/opt/homebrew/bin/brew shellenv"")"
 
-	# disable brew analytics
-	brew analytics off
+  # disable brew analytics
+  brew analytics off
 
-	brew update
+  brew update
 
-	# terminal
-	brew install --cask alacritty
-	brew install tmux
+  # terminal
+  brew install --cask alacritty
+  brew install tmux
 
-	# apps
-	brew install --cask brave-browser
-	brew install --cask expressvpn
-	# brew install --cask keepassxc
-	# brew install --cask libreoffice
-	# brew install --cask microsoft-edge
-	# brew install --cask postico
-	# brew install --cask rectangle
-	# brew install --cask signal
-	# brew install --cask tuple
+  # apps
+  brew install --cask brave-browser
+  brew install --cask expressvpn
+  # brew install --cask keepassxc
+  # brew install --cask libreoffice
+  # brew install --cask microsoft-edge
+  # brew install --cask postico
+  # brew install --cask rectangle
+  # brew install --cask signal
+  # brew install --cask tuple
 
-	# terminal utilities
-	brew install btop
-	brew install eza
-	brew install git-delta
-	brew install jesseduffield/lazydocker/lazydocker
-	brew install jesseduffield/lazygit/lazygit
-	brew install less
-	brew install mpv
-	brew install neofetch
-	brew install neovim
-	brew install nnn
-	brew install ripgrep
-	brew install spotify_player
-	brew install tealdeer
-	brew install trash
-	brew install youtube-dl
-	brew install zoxide
-	brew install zsh-autosuggestions
-	brew install zsh-syntax-highlighting
-	brew install zsh-vi-mode
+  # terminal utilities
+  brew install btop
+  brew install eza
+  brew install git-delta
+  brew install jesseduffield/lazydocker/lazydocker
+  brew install jesseduffield/lazygit/lazygit
+  brew install less
+  brew install mpv
+  brew install neofetch
+  brew install neovim
+  brew install nnn
+  brew install ripgrep
+  brew install spotify_player
+  brew install tealdeer
+  brew install trash
+  brew install youtube-dl
+  brew install zoxide
+  brew install zsh-autosuggestions
+  brew install zsh-syntax-highlighting
+  brew install zsh-vi-mode
 
-	# neovim dependencies
-	brew install node
-	brew install yarn
+  # neovim dependencies
+  brew install node
+  brew install yarn
 
-	# powerlevel10k
-	brew install romkatv/powerlevel10k/powerlevel10k
-	brew tap homebrew/cask-fonts
-	brew install font-jetbrains-mono-nerd-font
+  # powerlevel10k
+  brew install romkatv/powerlevel10k/powerlevel10k
+  brew tap homebrew/cask-fonts
+  brew install font-jetbrains-mono-nerd-font
 
-	brew upgrade
-	brew autoremove
-	brew cleanup --prune=all
+  brew upgrade
+  brew autoremove
+  brew cleanup --prune=all
 }
 
 install_powerlevel10k_font() {
-	# manually download the fonts from github
-	local -r og_directory="$( pwd )"
-	local -ar filenames=(
-		"MesloLGS NF Regular.ttf"
-		"MesloLGS NF Bold.ttf"
-		"MesloLGS NF Italic.ttf"
-		"MesloLGS NF Bold Italic.ttf"
-	)
-	local url
+  # manually download the fonts from github
+  local -r og_directory="$( pwd )"
+  local -ar filenames=(
+    "MesloLGS NF Regular.ttf"
+    "MesloLGS NF Bold.ttf"
+    "MesloLGS NF Italic.ttf"
+    "MesloLGS NF Bold Italic.ttf"
+  )
+  local url
 
-	cd /tmp
+  cd /tmp
 
-	for filename in "${filenames[@]}"; do
-		url="https://github.com/romkatv/powerlevel10k-media/raw/master/${filename// /%20}"
-		curl -L --output "${filename}" "${url}"
-		mv "${filename}" ~/Library/Fonts
-	done
+  for filename in "${filenames[@]}"; do
+    url="https://github.com/romkatv/powerlevel10k-media/raw/master/${filename// /%20}"
+    curl -L --output "${filename}" "${url}"
+    mv "${filename}" ~/Library/Fonts
+  done
 
-	cd "${og_directory}"
+  cd "${og_directory}"
 }
 
 setup_vscode() {
-	brew install --cask visual-studio-code
-	# brew install --cask vscodium
+  brew install --cask visual-studio-code
+  # brew install --cask vscodium
 
-	# ensure the settings.json file exists
-	local -r filepath="${HOME}/Library/Application Support/Code/User/settings.json"
-	if [[ ! -f "${filepath}" ]]; then
-		mkdir -p "$( dirname ${filepath} )"
-		touch "${filepath}"
-	fi
+  # ensure the settings.json file exists
+  local -r filepath="${HOME}/Library/Application Support/Code/User/settings.json"
+  if [[ ! -f "${filepath}" ]]; then
+    mkdir -p "$( dirname ${filepath} )"
+    touch "${filepath}"
+  fi
 
-	# create symlink for settings.json
-	ln -si \
-		"${HOME}/.config/vscode/settings.json" \
-		"${HOME}/Library/Application Support/Code/User/settings.json"
+  # create symlink for settings.json
+  ln -si \
+    "${HOME}/.config/vscode/settings.json" \
+    "${HOME}/Library/Application Support/Code/User/settings.json"
 
-	# install extensions
-	local -ar extensions=(
-		dbaeumer.vscode-eslint
-		editorconfig.editorconfig
-		eamodio.gitlens
-		esbenp.prettier-vscode
-		lifeart.vscode-ember-unstable
-		rubymaniac.vscode-direnv
-		vscodevim.vim
-	)
+  # install extensions
+  local -ar extensions=(
+    dbaeumer.vscode-eslint
+    editorconfig.editorconfig
+    eamodio.gitlens
+    esbenp.prettier-vscode
+    lifeart.vscode-ember-unstable
+    rubymaniac.vscode-direnv
+    vscodevim.vim
+  )
 
-	for i in ${extensions[@]}; do
-	  code --install-extension "${i}"
-	done
+  for i in ${extensions[@]}; do
+    code --install-extension "${i}"
+  done
 
-	# enable key-repeating, for the vim extension
-	defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+  # enable key-repeating, for the vim extension
+  defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 }
 
 main() {
-	system_setup
-	install_brew
-	install_powerlevel10k_font
-	setup_git_bare_repo
+  system_setup
+  install_brew
+  install_powerlevel10k_font
+  setup_git_bare_repo
 
-	local should_setup_vscode
-	read -N 1 -p "Would you like to install and set up VS Code? " should_setup_vscode
-	if [[ "${should_setup_vscode}" == "y" ]]; then
-		setup_vscode
-	fi
+  local should_setup_vscode
+  read -N 1 -p "Would you like to install and set up VS Code? " should_setup_vscode
+  if [[ "${should_setup_vscode}" == "y" ]]; then
+    setup_vscode
+  fi
 
-	# reboot
-	local should_reboot
-	read -N 1 -p "Mac setup is finished! Would you like to reboot? (y/n) " should_reboot
+  # reboot
+  local should_reboot
+  read -N 1 -p "Mac setup is finished! Would you like to reboot? (y/n) " should_reboot
 
-	if [[ "${should_reboot}" == "y" ]]; then
-		sudo reboot
-	fi
+  if [[ "${should_reboot}" == "y" ]]; then
+    sudo reboot
+  fi
 }
 main "${@}"
 

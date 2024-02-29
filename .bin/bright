@@ -4,39 +4,39 @@ set -o noclobber
 set -o pipefail
 
 set_brightness() {
-	local -r brightness="${1}"
-	echo "${brightness}" | tee /sys/class/backlight/*/brightness
+  local -r brightness="${1}"
+  echo "${brightness}" | tee /sys/class/backlight/*/brightness
 }
 
 main() {
-	local -r curr_brightness="$( cat /sys/class/backlight/*/brightness )"
+  local -r curr_brightness="$( cat /sys/class/backlight/*/brightness )"
 
-	case "${1}" in
-		--help)
-			cat <<-EOF
-				This is a utility script to adjust the screen brightness.
-				Usage:
-				bright
-				bright +100
-				bright -50
-				bright max
-				bright min
-			EOF
-			;;
-		"")
-			echo "${curr_brightness}"
-			;;
-		max)
-			local -r max_brightness="$( cat /sys/class/backlight/*/max_brightness )"
-			set_brightness "${max_brightness}"
-			;;
-		min)
-			set_brightness 0
-			;;
-		+* | -*)
-			local -r new_brightness=$(( "${curr_brightness}" "${1}" ))
-			set_brightness "${new_brightness}"
-			;;
-	esac
+  case "${1}" in
+    --help)
+      cat <<-EOF
+        This is a utility script to adjust the screen brightness.
+        Usage:
+        bright
+        bright +100
+        bright -50
+        bright max
+        bright min
+      EOF
+      ;;
+    "")
+      echo "${curr_brightness}"
+      ;;
+    max)
+      local -r max_brightness="$( cat /sys/class/backlight/*/max_brightness )"
+      set_brightness "${max_brightness}"
+      ;;
+    min)
+      set_brightness 0
+      ;;
+    +* | -*)
+      local -r new_brightness=$(( "${curr_brightness}" "${1}" ))
+      set_brightness "${new_brightness}"
+      ;;
+  esac
 }
 main "${@}"

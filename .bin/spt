@@ -4,7 +4,7 @@ set -o noclobber
 set -o pipefail
 
 if [[ -z "$( pgrep spotifyd )" ]]; then
-	spotifyd
+  spotifyd
 fi
 
 /usr/bin/spt

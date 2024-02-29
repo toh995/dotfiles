@@ -6,7 +6,7 @@ set -o pipefail
 readonly PROFILE_DIR="$(echo "${HOME}"/.mozilla/firefox/*.default-release)"
 
 if [[ ! -d "${PROFILE_DIR}" ]]; then
-	exit 1
+  exit 1
 fi
 
 #####################################
@@ -14,20 +14,20 @@ fi
 #####################################
 readonly BASE_URL="https://raw.githubusercontent.com/arkenfox/user.js/master"
 readonly -a FILE_NAMES=(
-	"prefsCleaner.sh"
-	"updater.sh"
-	"user.js"
+  "prefsCleaner.sh"
+  "updater.sh"
+  "user.js"
 )
 declare full_path
 
 for file_name in "${FILE_NAMES[@]}"; do
-	file_path="${PROFILE_DIR}/${file_name}"
-
-	# If the file doesn't exist, then download it
-	if [[ ! -f "${file_path}" ]]; then
-		curl "${BASE_URL}/${file_name}" > "${file_path}"
-		chmod +x "${file_path}"
-	fi
+  file_path="${PROFILE_DIR}/${file_name}"
+  
+  # If the file doesn't exist, then download it
+  if [[ ! -f "${file_path}" ]]; then
+    curl "${BASE_URL}/${file_name}" > "${file_path}"
+    chmod +x "${file_path}"
+  fi
 done
 
 ######################

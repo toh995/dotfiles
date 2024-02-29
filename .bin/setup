@@ -6,87 +6,87 @@ set -o pipefail
 readonly USERNAME="toh995"
 
 readonly -a DEFAULT_SYSTEMD_SERVICES=(
-	NetworkManager.service
-	bluetooth.service
-	systemd-boot-update.service
+  NetworkManager.service
+  bluetooth.service
+  systemd-boot-update.service
 )
 
 # IF REMOVING A PACKAGE,
 # SEARCH THE REST OF THIS SCRIPT
 readonly -a DEFAULT_PACKAGES=(
-	# x11
-	xorg-server
-	xorg-xinit
+  # x11
+  xorg-server
+  xorg-xinit
 
-	# window manager
-	i3-gaps
-	polybar
-	dmenu
+  # window manager
+  i3-gaps
+  polybar
+  dmenu
 
-	# networking
-	networkmanager
+  # networking
+  networkmanager
 
-	# bluetooth
-	bluez
-	bluez-utils
+  # bluetooth
+  bluez
+  bluez-utils
 
-	# permissioning
-	polkit
-	sudo
+  # permissioning
+  polkit
+  sudo
 
-	# sound
-	pipewire
-	pipewire-alsa
-	pipewire-jack
-	pipewire-pulse
-	wireplumber
+  # sound
+  pipewire
+  pipewire-alsa
+  pipewire-jack
+  pipewire-pulse
+  wireplumber
 
-	# terminal emulator
-	alacritty
-	tmux
-	# rxvt-unicode
+  # terminal emulator
+  alacritty
+  tmux
+  # rxvt-unicode
 
-	# fonts
-	noto-fonts
-	noto-fonts-cjk
-	noto-fonts-emoji
-	noto-fonts-extra
+  # fonts
+  noto-fonts
+  noto-fonts-cjk
+  noto-fonts-emoji
+  noto-fonts-extra
 
-	# apps
-	brave-bin
-	keepassxc
-	zathura
-	zathura-pdf-mupdf
+  # apps
+  brave-bin
+  keepassxc
+  zathura
+  zathura-pdf-mupdf
 
-	# commandline utilities
-	btop
-	eza
-	git
-	git-delta
-	lazydocker
-	lazygit
-	man-db # man pages
-	mpv
-	neofetch
-	nnn
-	openssh
-	python-grip
-	ripgrep
-	spotify-player
-	tealdeer
-	trash-cli
-	xclip
-	yt-dlp
-	zoxide
-	zsh
-	zsh-autosuggestions
-	zsh-syntax-highlighting
-	zsh-vi-mode
+  # commandline utilities
+  btop
+  eza
+  git
+  git-delta
+  lazydocker
+  lazygit
+  man-db # man pages
+  mpv
+  neofetch
+  nnn
+  openssh
+  python-grip
+  ripgrep
+  spotify-player
+  tealdeer
+  trash-cli
+  xclip
+  yt-dlp
+  zoxide
+  zsh
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-vi-mode
 
-	# powerlevel10k
-	ttf-meslo-nerd-font-powerlevel10k
-	ttf-jetbrains-mono-nerd
-	zsh-theme-powerlevel10k-git
+  # powerlevel10k
+  ttf-meslo-nerd-font-powerlevel10k
+  ttf-jetbrains-mono-nerd
+  zsh-theme-powerlevel10k-git
 )
 
 
@@ -94,193 +94,193 @@ readonly -a DEFAULT_PACKAGES=(
 # HELPER FUNCTIONS #
 ####################
 command_exists() {
-	local -r command="${1}"
-	if type "${command}" &>/dev/null; then
-		return 0
-	else
-		return 1
-	fi
+  local -r command="${1}"
+  if type "${command}" &>/dev/null; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 install_packages() {
-	if command_exists "yay"; then
-		yay -S "${@}"
-	else
-		pacman -S "${@}"
-	fi
+  if command_exists "yay"; then
+    yay -S "${@}"
+  else
+    pacman -S "${@}"
+  fi
 }
 
 user_exists() {
-	local -r username="${1}"
-	# silent, it just sets the exit code
-	id "${username}" &>/dev/null
+  local -r username="${1}"
+  # silent, it just sets the exit code
+  id "${username}" &>/dev/null
 }
 
 get_home_dir() {
-	local -r username="${1}"
-	echo "$( eval echo "~${username}" )"
+  local -r username="${1}"
+  echo "$( eval echo "~${username}" )"
 }
 
 run_as_user() {
-	local -r user="${1}"
-	shift
-	local -r script="${@}"
-	sudo -u "${user}" \
-		bash -c -i "${script}"
+  local -r user="${1}"
+  shift
+  local -r script="${@}"
+  sudo -u "${user}" \
+    bash -c -i "${script}"
 }
 
 write_to_file() {
-	local -r filepath="${1}"
-	local -r text="${2}"
+  local -r filepath="${1}"
+  local -r text="${2}"
 
-	mkdir -p "$( dirname "${filepath}" )"
-	echo "${text}" >| "${filepath}"
+  mkdir -p "$( dirname "${filepath}" )"
+  echo "${text}" >| "${filepath}"
 }
 
 ##################
 # MAIN FUNCTIONS #
 ##################
 upgrade_all_packages() {
-	pacman -Syu
+  pacman -Syu
 }
 
 clean_new_user_skeleton() {
-	# hack, return a success code,
-	# b/c removing `.` and `..` results in error code
-	rm /etc/skel/.* 2> /dev/null \
-		|| return 0
+  # hack, return a success code,
+  # b/c removing `.` and `..` results in error code
+  rm /etc/skel/.* 2> /dev/null \
+    || return 0
 }
 
 create_user() {
-	local -r username="${1}"
-	local -r home_dir="/home/${username}"
+  local -r username="${1}"
+  local -r home_dir="/home/${username}"
 
-	pacman -S "zsh"
+  pacman -S "zsh"
 
-	echo "Creating new user ${username}..."
-	useradd --create-home --gid=users --shell=/usr/bin/zsh "${username}"
-	passwd "${username}" # todo: what if the user typos the password input?
+  echo "Creating new user ${username}..."
+  useradd --create-home --gid=users --shell=/usr/bin/zsh "${username}"
+  passwd "${username}" # todo: what if the user typos the password input?
 }
 
 setup_sudo() {
-	local -r username="${1}"
-	local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
+  local -r username="${1}"
+  local -r OVERRIDE_FILE_PATH="/etc/sudoers.d/override"
 
-	# install sudo
-	pacman -S "sudo"
+  # install sudo
+  pacman -S "sudo"
 
-	# add user to the wheel group
-	usermod -a -G wheel "${username}"
+  # add user to the wheel group
+  usermod -a -G wheel "${username}"
 
-	# allow `wheel` group to do root stuff
-	write_to_file "${OVERRIDE_FILE_PATH}" \
-		"$( cat <<-EOF
-			Defaults passwd_timeout=0
-			Defaults timestamp_timeout=30
-			Defaults insults
+  # allow `wheel` group to do root stuff
+  write_to_file "${OVERRIDE_FILE_PATH}" \
+    "$( cat <<-EOF
+      Defaults passwd_timeout=0
+      Defaults timestamp_timeout=30
+      Defaults insults
 
-			%wheel ALL=(ALL:ALL) ALL
-			EOF
-		)"
+      %wheel ALL=(ALL:ALL) ALL
+      EOF
+    )"
 
-	# double check that the file is correct
-	visudo --check --file="${OVERRIDE_FILE_PATH}"
+  # double check that the file is correct
+  visudo --check --file="${OVERRIDE_FILE_PATH}"
 }
 
 yay_install_setup() {
-	local -r username="${1}"
-	pacman -S --needed git base-devel
+  local -r username="${1}"
+  pacman -S --needed git base-devel
 
-	# install yay
-	run_as_user "${username}" \
-		"
-			set -e
-			cd /tmp
-			[[ -d /tmp/yay ]] && rm -rf /tmp/yay
-			git clone https://aur.archlinux.org/yay.git
-			cd yay
-			makepkg -si
+  # install yay
+  run_as_user "${username}" \
+    "
+      set -e
+      cd /tmp
+      [[ -d /tmp/yay ]] && rm -rf /tmp/yay
+      git clone https://aur.archlinux.org/yay.git
+      cd yay
+      makepkg -si
 
-			# once yay is installed, perform some housekeeping
-			yay -Y --gendb
-			yay -Syu --devel
-			yay -Y --devel --save
-		"
+      # once yay is installed, perform some housekeeping
+      yay -Y --gendb
+      yay -Syu --devel
+      yay -Y --devel --save
+    "
 }
 
 install_default_packages() {
-	local -r username="${1}"
-	shift
-	run_as_user "${username}" "yay -S ${@}"
+  local -r username="${1}"
+  shift
+  run_as_user "${username}" "yay -S ${@}"
 }
 
 configure_autologin() {
-	local -r username="${1}"
-	local -r filepath="/etc/systemd/system/getty@tty1.service.d/autologin.conf"
+  local -r username="${1}"
+  local -r filepath="/etc/systemd/system/getty@tty1.service.d/autologin.conf"
 
-	write_to_file "${filepath}" \
-		"$( cat <<-EOF
-			[Service]
-			ExecStart=
-			ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin ${username} - \$TERM
-			EOF
-		)"
+  write_to_file "${filepath}" \
+    "$( cat <<-EOF
+      [Service]
+      ExecStart=
+      ExecStart=-/sbin/agetty -o '-p -f -- \\u' --noclear --autologin ${username} - \$TERM
+      EOF
+    )"
 }
 
 configure_backlight_brightness() {
-	# add user to the video group
-	local -r username="${1}"
-	usermod -a -G video "${username}"
+  # add user to the video group
+  local -r username="${1}"
+  usermod -a -G video "${username}"
 
-	# write udev rules for the video group
-	local -r filepath="/etc/udev/rules.d/backlight.rules"
-	write_to_file "${filepath}" \
-		"$( cat <<-EOF
-			ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
-			ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
-			EOF
-		)"
+  # write udev rules for the video group
+  local -r filepath="/etc/udev/rules.d/backlight.rules"
+  write_to_file "${filepath}" \
+    "$( cat <<-EOF
+      ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+      ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+      EOF
+    )"
 }
 
 configure_network() {
-	# add user to the network group
-	local -r username="${1}"
-	usermod -a -G network "${username}"
+  # add user to the network group
+  local -r username="${1}"
+  usermod -a -G network "${username}"
 }
 
 setup_git_bare_repo() {
-	local -r username="${1}"
-	local -r user_home="$( get_home_dir "${username}" )"
-	local -r repo_dir="${user_home}/.dotfiles"
-	local -r repo_url="https://github.com/toh995/dotfiles.git"
+  local -r username="${1}"
+  local -r user_home="$( get_home_dir "${username}" )"
+  local -r repo_dir="${user_home}/.dotfiles"
+  local -r repo_url="https://github.com/toh995/dotfiles.git"
 
-	run_as_user "$username" \
-		"
-			set -e
-			mkdir -p ${repo_dir}
-			git clone --bare ${repo_url} ${repo_dir}
-			alias dot=\"git --git-dir=${repo_dir} --work-tree=${user_home}\"
-			dot checkout
-			dot config --local status.showUntrackedFiles no
-		"
+  run_as_user "$username" \
+    "
+      set -e
+      mkdir -p ${repo_dir}
+      git clone --bare ${repo_url} ${repo_dir}
+      alias dot=\"git --git-dir=${repo_dir} --work-tree=${user_home}\"
+      dot checkout
+      dot config --local status.showUntrackedFiles no
+    "
 }
 
 enable_systemd_services() {
-	for service in "${@}"; do
-		systemctl is-enabled --quiet "${service}" || \
-			systemctl enable "${service}"
-	done
+  for service in "${@}"; do
+    systemctl is-enabled --quiet "${service}" || \
+      systemctl enable "${service}"
+  done
 }
 
 remove_orphaned_packages() {
-	local command
-	if command_exists "yay"; then
-		command="yay"
-	else
-		command="pacman"
-	fi
+  local command
+  if command_exists "yay"; then
+    command="yay"
+  else
+    command="pacman"
+  fi
 
-	("${command}" -Qtdq | "${command}" -Rns --noconfirm - 2&>/dev/null) || true
+  ("${command}" -Qtdq | "${command}" -Rns --noconfirm - 2&>/dev/null) || true
 }
 
 
@@ -288,19 +288,19 @@ remove_orphaned_packages() {
 # MAIN #
 ########
 main() {
-	upgrade_all_packages
-	clean_new_user_skeleton
-	user_exists "${USERNAME}" || create_user "${USERNAME}"
-	setup_sudo "${USERNAME}"
-	yay_install_setup "${USERNAME}"
-	install_default_packages "${USERNAME}" "${DEFAULT_PACKAGES[@]}"
-	setup_git_bare_repo "${USERNAME}"
-	configure_autologin "${USERNAME}"
-	configure_backlight_brightness "${USERNAME}"
-	configure_network "${USERNAME}"
-	enable_systemd_services "${DEFAULT_SYSTEMD_SERVICES[@]}"
-	remove_orphaned_packages
+  upgrade_all_packages
+  clean_new_user_skeleton
+  user_exists "${USERNAME}" || create_user "${USERNAME}"
+  setup_sudo "${USERNAME}"
+  yay_install_setup "${USERNAME}"
+  install_default_packages "${USERNAME}" "${DEFAULT_PACKAGES[@]}"
+  setup_git_bare_repo "${USERNAME}"
+  configure_autologin "${USERNAME}"
+  configure_backlight_brightness "${USERNAME}"
+  configure_network "${USERNAME}"
+  enable_systemd_services "${DEFAULT_SYSTEMD_SERVICES[@]}"
+  remove_orphaned_packages
 
-	echo "Set up is complete! Please reboot."
+  echo "Set up is complete! Please reboot."
 }
 main "${@}"

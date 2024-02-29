@@ -5,14 +5,14 @@ set -o pipefail
 
 # install stuff
 case "${OSTYPE}" in
-	"darwin"*)
-		brew install gnupg pass spotifyd spotify-tui
-		brew autoremove
-		;;
-	"linux"*)
-		[[ "$(cat /etc/os-release)" =~ "ID=arch" ]] && \
-			yay -S gnupg pass rust spotifyd spotify-tui
-		;;
+  "darwin"*)
+    brew install gnupg pass spotifyd spotify-tui
+    brew autoremove
+    ;;
+  "linux"*)
+    [[ "$(cat /etc/os-release)" =~ "ID=arch" ]] && \
+      yay -S gnupg pass rust spotifyd spotify-tui
+    ;;
 esac
 
 # generate gpg key
@@ -24,8 +24,8 @@ declare -r public_keys="$( gpg --list-keys --with-colons | grep "pub" )"
 declare -ir num_keys="$( wc -l <<< "${public_keys}" )"
 
 if (( "${num_keys}" != 1 )); then
-	echo "Found more than one gpg key! Aborting..."
-	exit 1
+  echo "Found more than one gpg key! Aborting..."
+  exit 1
 fi
 
 declare -r key_id="$( cut -d ":" -f 5 <<< "${public_keys}" )"
