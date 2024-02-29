@@ -1,0 +1,3 @@
+[submodule ".config/tmux/catppuccin"]
+	path = .config/tmux/catppuccin
+	url = https://github.com/catppuccin/tmux
