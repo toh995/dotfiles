@@ -52,10 +52,6 @@ export GOPATH="${XDG_DATA_HOME}/go"
 export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
 export PATH="${GOPATH}/bin:${PATH}"
 
-
-# grip
-export GRIPHOME="${XDG_CONFIG_HOME:-$HOME/.config}/grip"
-
 # lazydocker
 alias ld="lazydocker"
 
@@ -78,9 +74,6 @@ export GROFF_NO_SGR=1
 # neovim
 alias n="nvim ."
 
-# nnn
-export NNN_OPTS="H"
-
 # powerlevel10k
 case "${OSTYPE}" in
 	"darwin"*)
@@ -91,7 +84,6 @@ case "${OSTYPE}" in
 			source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 		;;
 esac
-
 source "${XDG_CONFIG_HOME}/powerlevel10k/.p10k.zsh"
 
 # pass
@@ -108,7 +100,6 @@ alias pi="pnpm install"
 # python
 export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}/python/pythonstartup.py"
 export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_history"
-
 [[ -f "${PYTHONHISTFILE}" ]] || \
 	mkdir -p "$( dirname "${PYTHONHISTFILE}" )"
 

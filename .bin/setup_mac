@@ -95,7 +95,6 @@ install_brew() {
   brew install mpv
   brew install neofetch
   brew install neovim
-  brew install nnn
   brew install ripgrep
   brew install spotify_player
   brew install tealdeer

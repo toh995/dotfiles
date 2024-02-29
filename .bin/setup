@@ -68,9 +68,7 @@ readonly -a DEFAULT_PACKAGES=(
   man-db # man pages
   mpv
   neofetch
-  nnn
   openssh
-  python-grip
   ripgrep
   spotify-player
   tealdeer
