@@ -16,15 +16,15 @@ alias suspend="systemctl suspend"
 alias suspend-then-hibernate="systemctl suspend-then-hibernate"
 
 help() {
-	local -r command="${1}"
-	bash <<< "help ${command} | less"
+  local -r command="${1}"
+  bash <<< "help ${command} | less"
 }
 
 # brew
 if [[ "${OSTYPE}" == "darwin"* ]]; then
-	# make brew available in PATH
-	eval "$(/opt/homebrew/bin/brew shellenv"")"
-	export HOMEBREW_NO_ANALYTICS=1
+  # make brew available in PATH
+  eval "$(/opt/homebrew/bin/brew shellenv"")"
+  export HOMEBREW_NO_ANALYTICS=1
 fi
 
 # direnv
@@ -43,9 +43,9 @@ export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local.share}/gnupg"
 # if the directory $GNUPGHOME doesn't exist, then create it.
 # also ensure permissions are adjusted appropriately.
 if ! [[ -d "${GNUPGHOME}" ]]; then
-	mkdir -p "${GNUPGHOME}"
-	chown -R "$(whoami)" "${GNUPGHOME}"
-	chmod 700 "${GNUPGHOME}"
+  mkdir -p "${GNUPGHOME}"
+  chown -R "$(whoami)" "${GNUPGHOME}"
+  chmod 700 "${GNUPGHOME}"
 fi
 
 # go
@@ -77,20 +77,20 @@ alias n="nvim ."
 
 # powerlevel10k
 case "${OSTYPE}" in
-	"darwin"*)
-		source "$(brew --prefix)"/share/powerlevel10k/powerlevel10k.zsh-theme
-		;;
-	"linux"*)
-		[[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]] && \
-			source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-		;;
+  "darwin"*)
+    source "$(brew --prefix)"/share/powerlevel10k/powerlevel10k.zsh-theme
+    ;;
+  "linux"*)
+    [[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]] && \
+      source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+    ;;
 esac
 source "${XDG_CONFIG_HOME}/powerlevel10k/.p10k.zsh"
 
 # pass
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
 [[ -d "${PASSWORD_STORE_DIR}" ]] || \
-	mkdir -p "${PASSWORD_STORE_DIR}"
+  mkdir -p "${PASSWORD_STORE_DIR}"
 
 # pnpm
 export PNPM_HOME="${HOME}/.local/share/pnpm"
@@ -102,7 +102,7 @@ alias pi="pnpm install"
 export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}/python/pythonstartup.py"
 export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_history"
 [[ -f "${PYTHONHISTFILE}" ]] || \
-	mkdir -p "$( dirname "${PYTHONHISTFILE}" )"
+  mkdir -p "$( dirname "${PYTHONHISTFILE}" )"
 
 # rust
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
@@ -115,7 +115,7 @@ export TEALDEER_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tealdeer"
 
 # tmux
 ta() {
-	local -r session_name="${1}"
+  local -r session_name="${1}"
   if [[ -z "${session_name}" ]]; then
     tmux attach-session
   else
@@ -138,13 +138,13 @@ alias j="z"
 # ZSH syntax highlighting
 # ZSH vi-mode
 if [[ "${OSTYPE}" == "darwin"* ]]; then
-	source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-	source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-	source "${HOMEBREW_PREFIX}/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+  source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "${HOMEBREW_PREFIX}/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 elif [[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]]; then
-	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-	source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 fi
 # for zsh vi-mode, remap the `esc` key
 export ZVM_VI_INSERT_ESCAPE_BINDKEY=kj
