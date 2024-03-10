@@ -281,6 +281,16 @@ remove_orphaned_packages() {
   ("${command}" -Qtdq | "${command}" -Rns --noconfirm - 2&>/dev/null) || true
 }
 
+install_gnome_extensions() {
+  # adapted from https://unix.stackexchange.com/a/762174
+  local -ra EXT_UUIDS=(
+    forge@jmmaranan.com # from https://github.com/forge-ext/forge/blob/c0a625a/metadata.json#L5
+  )
+  for i in "${EXT_UUIDS[@]}"
+  do
+    busctl --user call org.gnome.Shell.Extensions /org/gnome/Shell/Extensions org.gnome.Shell.Extensions InstallRemoteExtension s ${i}
+  done
+}
 
 ########
 # MAIN #
