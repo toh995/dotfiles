@@ -83,6 +83,16 @@ export GROFF_NO_SGR=1
 # neovim
 alias n="nvim ."
 
+# node
+export NODE_REPL_HISTORY="${XDG_STATE_HOME:-$HOME/.local/state}/node/.node_repl_history"
+[[ -f "${NODE_REPL_HISTORY}" ]] || \
+  mkdir -p "$( dirname "${NODE_REPL_HISTORY}" )"
+
+# postgres
+export PSQL_HISTORY="${XDG_STATE_HOME:-$HOME/.local/state}/psql/.psql_history"
+[[ -f "${PSQL_HISTORY}" ]] || \
+  mkdir -p "$( dirname "${PSQL_HISTORY}" )"
+
 # powerlevel10k
 case "${OSTYPE}" in
   "darwin"*)
