@@ -68,6 +68,7 @@ readonly -a DEFAULT_PACKAGES=(
   man-db # man pages
   mpv
   neofetch
+  neovim
   openssh
   ripgrep
   spotify-player
@@ -84,6 +85,7 @@ readonly -a DEFAULT_PACKAGES=(
   # powerlevel10k
   ttf-meslo-nerd-font-powerlevel10k
   ttf-jetbrains-mono-nerd
+  ttf-dejavu-nerd
   zsh-theme-powerlevel10k-git
 )
 

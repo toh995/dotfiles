@@ -112,7 +112,7 @@ install_brew() {
   # powerlevel10k
   brew install romkatv/powerlevel10k/powerlevel10k
   brew tap homebrew/cask-fonts
-  brew install font-jetbrains-mono-nerd-font
+  brew install font-dejavu-sans-mono-nerd-font
 
   brew upgrade
   brew autoremove
