@@ -52,6 +52,9 @@ readonly -a DEFAULT_PACKAGES=(
   noto-fonts-emoji
   noto-fonts-extra
 
+  # cursor
+  apple_cursor
+
   # apps
   brave-bin
   keepassxc
