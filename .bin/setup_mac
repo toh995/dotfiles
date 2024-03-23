@@ -88,6 +88,7 @@ install_brew() {
   # terminal utilities
   brew install btop
   brew install eza
+  brew install fzf
   brew install git-delta
   brew install jesseduffield/lazydocker/lazydocker
   brew install jesseduffield/lazygit/lazygit
