@@ -9,7 +9,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# ZSH plugins get sourced at the END
+# This is needed for zsh-syntax-highlighting
+# More info: https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#why-must-zsh-syntax-highlightingzsh-be-sourced-at-the-end-of-the-zshrc-file
 
+# basic aliases
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias lgd="lazygit --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 # alias ls="ls -1AF --color=auto"
@@ -93,18 +97,6 @@ export PSQL_HISTORY="${XDG_STATE_HOME:-$HOME/.local/state}/psql/.psql_history"
 [[ -f "${PSQL_HISTORY}" ]] || \
   mkdir -p "$( dirname "${PSQL_HISTORY}" )"
 
-# powerlevel10k
-case "${OSTYPE}" in
-  "darwin"*)
-    source "$(brew --prefix)"/share/powerlevel10k/powerlevel10k.zsh-theme
-    ;;
-  "linux"*)
-    [[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]] && \
-      source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-    ;;
-esac
-source "${XDG_CONFIG_HOME}/powerlevel10k/.p10k.zsh"
-
 # pass
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
 [[ -d "${PASSWORD_STORE_DIR}" ]] || \
@@ -152,17 +144,5 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 eval "$(zoxide init zsh)"
 alias j="z"
 
-# ZSH autosuggestions
-# ZSH syntax highlighting
-# ZSH vi-mode
-if [[ "${OSTYPE}" == "darwin"* ]]; then
-  source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-  source "${HOMEBREW_PREFIX}/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
-elif [[ "$(cat /etc/os-release)" =~ 'ID=arch|ID="endeavouros"' ]]; then
-  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-fi
-# for zsh vi-mode, remap the `esc` key
-export ZVM_VI_INSERT_ESCAPE_BINDKEY=kj
+# zsh plugins
+source "${ZDOTDIR}/plugins.zsh"
