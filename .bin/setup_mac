@@ -77,6 +77,7 @@ install_brew() {
   # apps
   brew install --cask brave-browser
   brew install --cask expressvpn
+  # brew install --cask docker
   # brew install --cask keepassxc
   # brew install --cask libreoffice
   # brew install --cask microsoft-edge
