@@ -1,0 +1,65 @@
+FROM quay.io/archlinux/archlinux:base-devel
+
+# Upgrade all packages
+RUN pacman -Syu --needed --noconfirm git
+
+# Set up a temp user 
+ARG user=tempuser
+ARG sudoers_file=/etc/sudoers.d/$user
+RUN useradd $user --create-home \
+  && echo "$user ALL=(ALL:ALL) NOPASSWD:ALL" > $sudoers_file
+USER $user
+
+# Install yay
+# Reference https://github.com/Jguer/yay?tab=readme-ov-file#binary
+RUN git clone https://aur.archlinux.org/yay-bin.git /tmp/yay \
+  && cd /tmp/yay \
+  && makepkg -si --noconfirm \
+  && rm -rf /tmp/yay
+
+# yay housekeeping
+# Reference https://github.com/Jguer/yay?tab=readme-ov-file#first-use
+RUN yay -Y --gendb \
+  && yay -Syu --devel --needed --noconfirm \
+  && yay -Y --devel --save
+
+# Install packages
+RUN pkgs=( \
+  alacritty \
+  btop \
+  eza \
+  fzf \
+  git \
+  git-delta \
+  lazygit \
+  man-db \
+  mpv \
+  neofetch \
+  neovim \
+  openssh \
+  ripgrep \
+  spotify-player \
+  tealdeer \
+  tmux \
+  trash-cli \
+  which \
+  xclip \
+  yt-dlp \
+  zoxide \
+  zsh \
+  zsh-autosuggestions \
+  zsh-syntax-highlighting \
+  zsh-vi-mode \
+) && yay -S --needed --noconfirm "${pkgs[@]}"
+
+# Remove orphaned packages
+# Reference: https://wiki.archlinux.org/title/Pacman/Tips_and_tricks#Removing_unused_packages_(orphans)
+RUN yay -Qtdq | yay -Rns - || true
+# Clean the package cache
+# Reference: https://wiki.archlinux.org/title/Pacman#Cleaning_the_package_cache
+RUN yay -Sc --noconfirm
+
+# Final cleanup of the temp user
+USER root
+RUN userdel $user --remove \
+  && rm $sudoers_file

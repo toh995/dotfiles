@@ -1,0 +1,49 @@
+FROM ghcr.io/void-linux/void-glibc-full:latest
+
+# Full system upgrade
+# Reference: https://docs.voidlinux.org/xbps/index.html#updating
+RUN xbps-install -Su
+
+# Base dependencies
+RUN xbps-install --yes \
+  alacritty \
+  btop \
+  curl \
+  delta \
+  eza \
+  fzf \
+  git \
+  lazygit \
+  mpv \
+  neofetch \
+  neovim \
+  ripgrep \
+  spotify-player \
+  tealdeer \
+  tmux \
+  trash-cli \
+  xclip \
+  yt-dlp \
+  zoxide \
+  zsh \
+  zsh-autosuggestions \
+  zsh-syntax-highlighting
+
+# Neovim dependencies
+RUN xbps-install --yes \
+  gcc \
+  make \
+  tree-sitter-devel
+
+# Dependencies for work
+RUN xbps-install --yes \
+  direnv \
+  git-lfs \
+  postgresql-client \
+  volta
+# NOTE: better to install volta natively
+# i.e. see https://volta.sh/
+
+# Clean cache and remove orphans
+# Reference: https://man.voidlinux.org/xbps-remove.1
+RUN xbps-remove -Oo
