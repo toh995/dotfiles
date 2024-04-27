@@ -42,8 +42,8 @@ sudo xbps-install -Su && sudo xbps-remove -Oo
 git clone --bare git@github.com:toh995/dotfiles.git $HOME/.dotfiles
 alias dot="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 dot checkout
-dot config --local status.showUntrackedFiles no
 dot submodule update --init --recursive
+dot config --local status.showUntrackedFiles no
 
 # Change the default shell to zsh
 sudo chsh -s /usr/bin/zsh toh995

@@ -3,14 +3,17 @@
 ## General
 
 ### Brave setup
-
-1. Switch to dark mode
-2. Add extensions
-   - [Vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en)
-   - [privacytools.io](https://www.privacytools.io/#browser-addons)
-3. Change the downloads folder
-   - Open Settings
-   - Search for downloads
+- Switch to dark mode
+- Add extensions
+    - [Vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb?hl=en)
+    - [privacytools.io](https://www.privacytools.io/#browser-addons)
+- Change the downloads folder
+    - Open Settings
+    - Search for downloads
+- Set the default font (e.g. Noto family fonts)
+- Change search engine
+- Disable Leo
+- Update "home" page
 
 ### GitHub ssh setup
 1. Follow the [GitHub instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
