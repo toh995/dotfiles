@@ -36,7 +36,9 @@ help() {
 if [[ "${OSTYPE}" == "darwin"* ]]; then
   # make brew available in PATH
   eval "$(/opt/homebrew/bin/brew shellenv"")"
+  export HOMEBREW_AUTOREMOVE=1
   export HOMEBREW_NO_ANALYTICS=1
+  export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
 # direnv
