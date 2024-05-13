@@ -1,7 +1,13 @@
-1. Run `setup-alpine` https://docs.alpinelinux.org/user-handbook/0.1a/Installing/setup_alpine.html
-2. Run `setup-apkrepos` https://wiki.alpinelinux.org/wiki/Repositories#Managing_repositories
-    - Run `e` to edit the version to `latest-stable`
-    - Run `f` to rank mirrors by fastest
-3. Run `apk update && apk upgrade`
-4. Follow instructions for installing xorg https://wiki.alpinelinux.org/wiki/Alpine_setup_scripts#setup-xorg-base
-5. Install gnome https://wiki.alpinelinux.org/wiki/gnome
+- Set up wifi https://wiki.alpinelinux.org/wiki/Wi-Fi
+- Run `setup-alpine` https://docs.alpinelinux.org/user-handbook/0.1a/Installing/setup_alpine.html
+- Reboot
+- Set up wifi again https://wiki.alpinelinux.org/wiki/Wi-Fi
+- Run `setup-apkrepos`, to enable the community repos https://wiki.alpinelinux.org/wiki/Repositories#Managing_repositories
+- Run `apk update && apk upgrade`
+- Install gnome https://wiki.alpinelinux.org/wiki/gnome
+- Set up networkmanager https://wiki.alpinelinux.org/wiki/NetworkManager
+- Set up flatpak https://wiki.alpinelinux.org/wiki/Flatpak
+- `apk del firefox`
+- Set up podman https://wiki.alpinelinux.org/wiki/Podman
+    - Set up rootless podman https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md
+- `apk add distrobox`
