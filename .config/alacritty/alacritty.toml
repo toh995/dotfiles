@@ -1,7 +1,3 @@
-import = [
-  "~/.config/alacritty/colorschemes/catppuccin-mocha.toml",
-]
-
 [font]
 size = 15
 # normal.family = "Hack Nerd Font"
@@ -29,3 +25,9 @@ style.blinking = "Always"
 decorations = "none"
 startup_mode = "Maximized"
 padding = { x = 5, y = 5 }
+
+[general]
+import = [
+  "~/.config/alacritty/colorschemes/catppuccin-mocha.toml",
+]
+
