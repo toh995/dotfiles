@@ -64,6 +64,12 @@ git clone git@github.com:toh995/nvim.git $XDG_CONFIG_HOME/nvim
 nvim .
 ```
 
+### Install VS Code
+```bash
+sudo xbps-install vscode
+distrobox-export --app code-oss
+```
+
 ### Podman compose
 ```bash
 # start
