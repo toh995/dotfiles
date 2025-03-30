@@ -15,6 +15,9 @@
 - Disable Leo
 - Update "home" page
 
+### Distrobox setup
+If using distrobox, follow the [setup instructions](../.config/distrobox/README.md).
+
 ### GitHub ssh setup
 1. Follow the [GitHub instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 2. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
