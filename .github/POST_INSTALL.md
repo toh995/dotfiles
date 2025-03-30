@@ -19,8 +19,16 @@
 If using distrobox, follow the [setup instructions](../.config/distrobox/README.md).
 
 ### GitHub ssh setup
-1. Follow the [GitHub instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-2. Manually switch the `dotfiles` repo to use SSH: `dot remote set-url origin git@github.com:toh995/dotfiles.git`
+Follow the [GitHub instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+### Clone this repo
+```bash
+git clone --bare git@github.com:toh995/dotfiles.git $HOME/.dotfiles
+alias dot="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+dot checkout
+dot submodule update --init --recursive
+dot config --local status.showUntrackedFiles no
+```
 
 ### Neovim
 Clone dotfiles:
@@ -39,6 +47,8 @@ Clone stuff to $XDG_DATA_HOME
 Run `spotify_setup`
 
 ## Gnome
+Install fonts.
+
 To load the gnome settings config, run:
 ```bash
 dconf load / < $XDG_CONFIG_HOME/gnome-settings/config.ini

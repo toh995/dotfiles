@@ -1,13 +1,4 @@
 # dotfiles
-## Setup
-```bash
-git clone --bare https://github.com/toh995/dotfiles.git $HOME/.dotfiles
-alias dot="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
-dot checkout
-dot submodule update --init --recursive
-dot config --local status.showUntrackedFiles no
-```
-
 ## Legacy Setup for Arch Linux
 1. Install the OS normally (i.e. [Arch Install Notes](INSTALL_NOTES_ARCH.md))
 2. Log in as root
