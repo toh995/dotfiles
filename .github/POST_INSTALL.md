@@ -39,6 +39,11 @@ git clone git@github.com:toh995/nvim.git
 
 Then, open neovim to bootstrap/install packages
 
+### Install Fonts
+Either:
+- Use one of the install options on the [README](https://github.com/ryanoasis/nerd-fonts) (e.g. install via package manager)
+- Direct download from the [nerd fonts website](https://www.nerdfonts.com/font-downloads)
+
 ### Password manager
 Clone stuff to $XDG_DATA_HOME
 
@@ -47,8 +52,6 @@ Clone stuff to $XDG_DATA_HOME
 Run `spotify_setup`
 
 ## Gnome
-Install fonts.
-
 To load the gnome settings config, run:
 ```bash
 dconf load / < $XDG_CONFIG_HOME/gnome-settings/config.ini
