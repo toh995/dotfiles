@@ -41,7 +41,6 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 fi
 
 # direnv
-export DIRENV_LOG_FORMAT=
 declare direnv_exists=$(command -v "direnv")
 [[ "${direnv_exists}" ]] && eval "$(direnv hook zsh)"
 
