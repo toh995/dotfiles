@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILL_DIR="$(dirname "$SCRIPT_DIR")"
+CONFIG_FILE="$SKILL_DIR/assets/config"
+TOKEN_FILE="$SKILL_DIR/assets/.token"
+
+# --- Load config ---
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Error: config file not found at $CONFIG_FILE" >&2
+  echo "Create ~/.claude/skills/jira/assets/config with:" >&2
+  echo "  base_url=https://your-domain.atlassian.net" >&2
+  echo "  email=your@email.com" >&2
+  exit 1
+fi
+
+if [[ ! -f "$TOKEN_FILE" ]]; then
+  echo "Error: token file not found at $TOKEN_FILE" >&2
+  echo "Create ~/.claude/skills/jira/assets/.token with your Jira API token" >&2
+  echo "Generate one at: https://id.atlassian.com/manage/api-tokens" >&2
+  exit 1
+fi
+
+# Source config (sets base_url and email)
+source "$CONFIG_FILE"
+TOKEN=$(<"$TOKEN_FILE")
+
+# Trim trailing slash from base_url and whitespace from token
+BASE_URL="${base_url%/}"
+TOKEN="${TOKEN%"${TOKEN##*[![:space:]]}"}"
+
+# --- Command dispatch ---
+cmd="${1:-}"
+shift || true
+
+case "$cmd" in
+  get)
+    ISSUE_KEY="${1:-}"
+    if [[ -z "$ISSUE_KEY" ]]; then
+      echo "Usage: jira-tool get <ISSUE-KEY>" >&2
+      exit 1
+    fi
+
+    # Single search: fetch the issue + all its children in one API call
+    FIELDS="summary,status,assignee,priority,labels,description,issuetype,issuelinks"
+    JQL="key = $ISSUE_KEY OR parent = $ISSUE_KEY OR \"Epic Link\" = $ISSUE_KEY"
+
+    response=$(curl -s -w "\n%{http_code}" \
+      -u "$email:$TOKEN" \
+      -H "Accept: application/json" \
+      -G "$BASE_URL/rest/api/2/search/jql" \
+      --data-urlencode "jql=$JQL" \
+      --data-urlencode "fields=$FIELDS" \
+      --data-urlencode "maxResults=5000")
+
+    body=$(echo "$response" | sed '$d')
+    status=$(echo "$response" | tail -1)
+
+    if [[ "$status" != "200" ]]; then
+      error_msg=$(echo "$body" | jq -r '.errorMessages[0] // "Unknown error"' 2>/dev/null || echo "Failed to parse error response")
+      echo "Error ($status): $error_msg" >&2
+      exit 1
+    fi
+
+    # Split: parent gets full detail, children get compact fields
+    echo "$body" | jq --arg key "$ISSUE_KEY" '.issues |
+      (map(select(.key == $key))[0]) as $parent |
+      (map(select(.key != $key))) as $children |
+      {
+        key: $parent.key,
+        summary: $parent.fields.summary,
+        type: $parent.fields.issuetype.name,
+        status: $parent.fields.status.name,
+        priority: $parent.fields.priority.name,
+        assignee: $parent.fields.assignee.displayName,
+        labels: $parent.fields.labels,
+        description: $parent.fields.description,
+        links: [($parent.fields.issuelinks // [])[] | {
+          relation: (if .outwardIssue then .type.outward else .type.inward end),
+          key: (.outwardIssue // .inwardIssue).key,
+          summary: (.outwardIssue // .inwardIssue).fields.summary,
+          status: (.outwardIssue // .inwardIssue).fields.status.name,
+          priority: (.outwardIssue // .inwardIssue).fields.priority.name
+        }],
+        children: [$children[] | {
+          key: .key,
+          summary: .fields.summary,
+          type: .fields.issuetype.name,
+          status: .fields.status.name,
+          priority: .fields.priority.name,
+          assignee: .fields.assignee.displayName,
+          description: .fields.description
+        }]
+      }'
+    ;;
+
+  *)
+    echo "Usage: jira-tool <command> [args]" >&2
+    echo "" >&2
+    echo "Commands:" >&2
+    echo "  get <ISSUE-KEY>    Fetch ticket details" >&2
+    exit 1
+    ;;
+esac
