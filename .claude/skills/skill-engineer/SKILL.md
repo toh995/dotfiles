@@ -53,7 +53,8 @@ Use `AskUserQuestion` when you need clarification — batch up to 4 questions pe
 
 ## Skill Structure
 
-Full spec (fetch only when you need to verify a detail): https://agentskills.io/specification
+Full spec (fetch only when you need to verify a detail): https://agentskills.io/specification.md
+Claude Code-specific docs (extra fields like `allowed-tools`, `context`, `agent`, etc.): https://code.claude.com/docs/en/skills.md
 
 ### Context efficiency tiers
 
@@ -75,12 +76,19 @@ name: skill-name
 description: >-
   Describe what it does AND when to use it. Include specific trigger keywords.
 disable-model-invocation: true  # optional — set for human-invoked-only skills
+allowed-tools: Read, Grep, Glob  # optional — pre-approve specific tools
 ---
 ```
 
 Name rules: lowercase, hyphens only, max 64 chars, must match directory name.
 
-Set `disable-model-invocation: true` when the skill is only meant to be called explicitly via `/skill-name`. Omit it (or set `false`) for skills that should auto-trigger when the LLM detects a matching context.
+Key optional fields:
+- `disable-model-invocation: true` — skill is only callable via `/skill-name`, not auto-triggered
+- `allowed-tools` — space-delimited list of tools Claude can use without asking permission when the skill is active. Use Bash glob patterns for scoped shell access: `Bash(git:*) Bash(npm:*)`. Useful for skills that need specific tools to do their job without pestering the user for approval on every call
+- `context: fork` — run in an isolated subagent (no conversation history)
+- `agent` — which subagent type to use with `context: fork` (e.g., `Explore`, `Plan`, `general-purpose`)
+
+There is no `deny-tools` frontmatter field. To restrict which skills Claude can invoke, use permission rules in `/permissions` (e.g., deny `Skill(deploy *)`).
 
 ### Body
 
@@ -92,6 +100,7 @@ Write the prompt/persona/workflow as the body of the SKILL.md. Recognize whether
 - **Include examples** when the desired output format isn't obvious
 - **Keep sections flat** — H2s for main sections, H3s only if genuinely needed. No deeper
 - **Split when needed** — detailed docs in `references/`, executable code in `scripts/`, static resources (templates, images, data files, schemas) in `assets/`
+- **Consider `allowed-tools`** — if the skill needs specific tools (e.g., `Bash(git:*)`, `Read`, `Grep`), add them to frontmatter so the user isn't prompted for each call. Conversely, for read-only or safety-sensitive skills, use `allowed-tools` to restrict Claude to only safe tools (e.g., `allowed-tools: Read, Grep, Glob` for a research-only skill)
 
 ### What NOT to do
 
