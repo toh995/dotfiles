@@ -1,5 +1,5 @@
 ---
-name: skill-engineer
+name: skills-engineer
 description: >-
   Create and refine Claude Code skills — reusable prompts, personas,
   and workflows for .claude/skills/.
@@ -76,7 +76,7 @@ name: skill-name
 description: >-
   Describe what it does AND when to use it. Include specific trigger keywords.
 disable-model-invocation: true  # optional — set for human-invoked-only skills
-allowed-tools: Read, Grep, Glob  # optional — pre-approve specific tools
+allowed-tools: Read(/**) Grep(/**) Glob(/**)  # optional — pre-approve specific tools, always path-scope
 ---
 ```
 
@@ -84,11 +84,49 @@ Name rules: lowercase, hyphens only, max 64 chars, must match directory name.
 
 Key optional fields:
 - `disable-model-invocation: true` — skill is only callable via `/skill-name`, not auto-triggered
-- `allowed-tools` — space-delimited list of tools Claude can use without asking permission when the skill is active. Use Bash glob patterns for scoped shell access: `Bash(git:*) Bash(npm:*)`. Useful for skills that need specific tools to do their job without pestering the user for approval on every call
+- `allowed-tools` — space-delimited list of tools auto-approved when the skill is active. See **Allowed-Tools Design** below for how to scope these properly
 - `context: fork` — run in an isolated subagent (no conversation history)
 - `agent` — which subagent type to use with `context: fork` (e.g., `Explore`, `Plan`, `general-purpose`)
 
 There is no `deny-tools` frontmatter field. To restrict which skills Claude can invoke, use permission rules in `/permissions` (e.g., deny `Skill(deploy *)`).
+
+### Allowed-Tools Design
+
+**Principle: least privilege.** Only auto-approve the narrowest set of operations the skill actually needs. Everything else should prompt the user.
+
+**Bash commands — be as specific as possible:**
+- Exact command > subcommand wildcard > tool wildcard
+- `Bash(ls *)` matches `ls -la` but NOT `lsof` (space before `*` enforces word boundary). `Bash(ls*)` matches both. The legacy `:*` suffix is deprecated — use ` *` instead.
+- Bad: `Bash(git *)` — allows `git push --force`, `git reset --hard`, anything
+- Better: `Bash(git diff *) Bash(git log *)` — scoped to subcommands
+- Best: `Bash(git branch --show-current) Bash(git diff --cached *)` — exact commands where possible, wildcards only for flag variations
+
+**Read, Grep, Glob, and Edit all support path-scoping via gitignore patterns:**
+- `Read`, `Grep`, `Glob`, and `Edit` all accept path specifiers. **Always scope each one explicitly** — don't rely on one tool's scoping covering another.
+- Pattern types:
+  - `/path` — relative to **project root**: `Read(/src/**)`
+  - `./path` — relative to **current directory**: `Read(./*.env)`
+  - `~/path` — from **home directory**: `Read(~/.config/*)`
+  - `//path` — **absolute** filesystem path: `Read(//tmp/scratch.txt)`
+- `*` matches files in a single directory, `**` matches recursively across directories.
+
+**Path-scoping depends on skill scope:**
+- **Project-level skills** (`.claude/skills/`) — path-scoping works well because the directory structure is known. Always scope to the repo or relevant directories.
+  - Bad: `Read Grep Glob` — machine-wide, no path restrictions
+  - Good: `Read(/**) Grep(/**) Glob(/**)` — scoped to the project root
+  - Best: `Read(/src/**) Grep(/src/**) Glob(/src/**)` — scoped to exactly the directories the skill needs
+- **Global skills** (`~/.claude/skills/`) — path-scoping with `/path` is unreliable because it's relative to whatever project root the user happens to be in. The directory structure varies between repos.
+  - If the skill is repo-agnostic and reads are frequent, `Read(/**) Grep(/**) Glob(/**)` is a reasonable default — it at least constrains to the current project.
+  - If the skill reads from a known global location, use absolute or home-relative paths: `Read(~/.config/my-tool/**)`.
+  - If the skill rarely reads files, omit read tools entirely and let the user approve each one.
+
+**Separate reads from writes:**
+- Read operations are lower risk — scope them to the repo or relevant directories and auto-approve
+- Write operations (`Edit`, `Write`, `Bash` commands that modify state) should almost never be auto-approved. Let the user see and approve each write.
+- `Edit` supports the same path-scoping as `Read`: `Edit(/src/**)` allows edits only in `src/`
+- Exception: `Edit(.claude/context/**)` for skills that write to a predictable, scoped location — but even then, consider whether the user wants to approve the write
+
+**When in doubt, omit.** A permission prompt is a feature, not a bug. The user sees exactly what the skill is about to do and can stop it. Only add tools to `allowed-tools` when the prompting genuinely degrades the experience.
 
 ### Body
 
@@ -100,7 +138,7 @@ Write the prompt/persona/workflow as the body of the SKILL.md. Recognize whether
 - **Include examples** when the desired output format isn't obvious
 - **Keep sections flat** — H2s for main sections, H3s only if genuinely needed. No deeper
 - **Split when needed** — detailed docs in `references/`, executable code in `scripts/`, static resources (templates, images, data files, schemas) in `assets/`
-- **Consider `allowed-tools`** — if the skill needs specific tools (e.g., `Bash(git:*)`, `Read`, `Grep`), add them to frontmatter so the user isn't prompted for each call. Conversely, for read-only or safety-sensitive skills, use `allowed-tools` to restrict Claude to only safe tools (e.g., `allowed-tools: Read, Grep, Glob` for a research-only skill)
+- **Consider `allowed-tools`** — follow the least-privilege guidance in **Allowed-Tools Design** above. Default to omitting tools and only auto-approve what's genuinely needed
 
 ### What NOT to do
 
@@ -125,6 +163,7 @@ description: >-
   Use when the user asks for help writing a commit message or wants to
   generate a commit message from staged changes.
 disable-model-invocation: true
+allowed-tools: Read(/**) Bash(git diff --cached *) Bash(git log *)
 ---
 
 # Commit Message Writer
@@ -146,6 +185,8 @@ Write a conventional commit message for the current staged changes.
 
 Display the commit message and ask if the user wants to commit with it.
 ```
+
+Note: only read-only git commands are auto-approved. `git commit` is intentionally omitted — the user sees and approves the actual commit via the Bash permission prompt.
 
 ## Example: Persona Skill
 
