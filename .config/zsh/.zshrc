@@ -13,6 +13,9 @@ fi
 # This is needed for zsh-syntax-highlighting
 # More info: https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#why-must-zsh-syntax-highlightingzsh-be-sourced-at-the-end-of-the-zshrc-file
 
+# Set up completion
+autoload -Uz compinit && compinit
+
 # basic aliases
 alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias lgd="lazygit --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
@@ -127,6 +130,7 @@ export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 
 # satl
 export SATL_REPO_PATH="/Users/toh/development/auditboard-satl"
+eval "$(satl completion zsh)"
 
 # spotify-player
 alias spt="spotify_player"
