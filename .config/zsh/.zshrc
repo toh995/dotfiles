@@ -40,9 +40,16 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
+# atuin
+zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
+
+# claude code
+alias c="claude --effort max"
+
 # direnv
 declare direnv_exists=$(command -v "direnv")
 [[ "${direnv_exists}" ]] && eval "$(direnv hook zsh)"
+export DIRENV_LOG_FORMAT=
 
 # ghcup
 export GHCUP_USE_XDG_DIRS="true"
@@ -50,7 +57,8 @@ export GHCUP_USE_XDG_DIRS="true"
 [[ -f "${HOME}/.ghcup/env" ]] && source "${HOME}/.ghcup/env" # for root-level .ghcup
 [ -f "${XDG_DATA_HOME}/ghcup/env" ] && source "${XDG_DATA_HOME}/ghcup/env" # for XDG
 
-# gnupg
+# gnupg (gpg)
+export GPG_TTY=$(tty)
 export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local.share}/gnupg"
 # if the directory $GNUPGHOME doesn't exist, then create it.
 # also ensure permissions are adjusted appropriately.
@@ -116,6 +124,9 @@ export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_hist
 
 # rust
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+
+# satl
+export SATL_REPO_PATH="/Users/toh/development/auditboard-satl"
 
 # spotify-player
 alias spt="spotify_player"
