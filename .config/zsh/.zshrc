@@ -21,7 +21,7 @@ alias dot="git --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 alias lgd="lazygit --git-dir=${HOME}/.dotfiles --work-tree=${HOME}"
 # alias ls="ls -1AF --color=auto"
 alias ls="eza -1aF"
-[[ $OSTYPE == 'darwin'* ]] && alias trash="trash -F"
+[[ $OSTYPE == 'darwin'* ]] && alias trash="trash --stopOnError"
 
 # power management aliases
 alias hibernate="systemctl hibernate"
