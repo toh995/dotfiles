@@ -44,7 +44,8 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 fi
 
 # atuin
-zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
+[[ "$(command -v "direnv")" ]] && \
+  zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
 
 # claude code
 alias c="claude --effort max"
@@ -129,8 +130,10 @@ export PYTHONHISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/python/.python_hist
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 
 # satl
-export SATL_REPO_PATH="/Users/toh/development/auditboard-satl"
-eval "$(satl completion zsh)"
+if [[ "$(command -v "satl")" ]]; then
+  export SATL_REPO_PATH="/Users/toh/development/auditboard-satl"
+  eval "$(satl completion zsh)"
+fi
 
 # spotify-player
 alias spt="spotify_player"
