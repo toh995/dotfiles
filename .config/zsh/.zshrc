@@ -48,7 +48,7 @@ fi
   zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
 
 # claude code
-alias c="claude --effort max"
+alias c="claude"
 
 # direnv
 declare direnv_exists=$(command -v "direnv")
