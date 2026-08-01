@@ -44,7 +44,7 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 fi
 
 # atuin
-[[ "$(command -v "direnv")" ]] && \
+[[ "$(command -v "atuin")" ]] && \
   zvm_after_init_commands+=(eval "$(atuin init zsh --disable-up-arrow)")
 
 # claude code
