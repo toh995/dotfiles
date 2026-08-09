@@ -6,6 +6,7 @@
 # Read JSON data from stdin and extract the event type
 JSON_INPUT=$(cat)
 EVENT_TYPE=$(echo "$JSON_INPUT" | jq -r '.hook_event_name // "unknown"')
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] event=$EVENT_TYPE pid=$$ ppid=$PPID" >> /tmp/claude-hook.log
 
 case "$EVENT_TYPE" in
     "Stop")
@@ -17,6 +18,11 @@ case "$EVENT_TYPE" in
         # Notification when Claude is asking for user input/permission
         afplay /System/Library/Sounds/Glass.aiff &
         osascript -e 'display notification "Waiting for your response" with title "Claude Code" subtitle "Input Required"'
+        ;;
+    "PermissionRequest")
+        # Notification when Claude is requesting tool permission approval
+        afplay /System/Library/Sounds/Glass.aiff &
+        osascript -e 'display notification "Tool permission requested" with title "Claude Code" subtitle "Permission Required"'
         ;;
     *)
         # Default notification for other events
